@@ -690,3 +690,36 @@ body {
   .hero-stats { gap: 32px; }
   .section { padding: 70px 0; }
 }
+
+@media (max-width: 560px) {
+  .container { padding: 0 16px; }
+  .hero { padding-top: 84px; padding-bottom: 40px; }
+  .hero-title { font-size: clamp(1.9rem, 8.5vw, 2.5rem); margin-bottom: 18px; }
+  .hero-sub { font-size: 1rem; margin-bottom: 28px; }
+  .hero-cta { flex-direction: column; align-items: stretch; gap: 12px; margin-bottom: 40px; }
+  .hero-cta .btn { width: 100%; }
+  .hero-stats { gap: 28px; }
+  .stat-value { font-size: 2rem; }
+  .section { padding: 56px 0; }
+  .section-head { margin-bottom: 36px; }
+  .section-sub { font-size: 0.95rem; }
+  .card { padding: 22px; }
+  .tab-btn { padding: 10px 18px; font-size: 0.85rem; }
+  .inst-vol { font-size: 2.1rem; }
+  .funnel-step { min-width: 100%; }
+  .funnel-arrow { justify-content: center; transform: rotate(90deg); }
+  .join-inner { padding: 40px 20px; }
+  .join-step { padding: 8px 14px; font-size: 0.8rem; }
+  .modal-overlay { padding: 12px; }
+  .modal { padding: 26px 20px; }
+  .faq-question { padding: 16px 18px; font-size: 0.95rem; }
+  .faq-answer p { padding: 0 16px 16px; }
+  .footer-inner { gap: 28px; }
+}
+
+@media (max-width: 380px) {
+  .brand-text { font-size: 0.95rem; }
+  .brand-accent { font-size: 0.63rem; letter-spacing: 1.5px; }
+  .price-amount { font-size: 2.2rem; }
+  .footer-bottom { font-size: 0.9rem; }
+}
