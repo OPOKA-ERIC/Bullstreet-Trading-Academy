@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bullstreet Academy | Professional Trading Education</title>
+  <meta name="description" content="Bullstreet Academy offers professional forex and institutional trading education. Two tracks: Retail and Institutional. Learn order flow, DOM and footprint trading from professionals.">
+  <link rel="icon" type="image/jpeg" href="logo.jpeg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="#top" class="brand">
+        <img src="logo.jpeg" alt="Bullstreet Academy logo" class="brand-logo">
+        <span class="brand-text">BULLSTREET<span class="brand-accent">ACADEMY</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="#about">Why Us</a>
+        <a href="#syllabus">Syllabus</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="#" class="btn btn-ghost btn-sm" id="nav-login-btn">Student Login</a>
+        <a href="#pricing" class="btn btn-primary btn-sm">Get Started</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#about">Why Us</a>
+      <a href="#syllabus">Syllabus</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="#" class="btn btn-primary" id="mobile-login-btn">Student Login</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-bg"></div>
+    <div class="container hero-inner">
+      <div class="hero-badge">BSA · Professional Trading Education</div>
+      <h1 class="hero-title">Stop Trading Blind.<br>Start Trading Like <span class="gradient-text">Institutions Do.</span></h1>
+      <p class="hero-sub">Learn professional order flow, Depth of Market (DOM) and institutional market structure at Bullstreet Academy. The education that retail traders never get — delivered in clear, structured tracks.</p>
+      <div class="hero-cta">
+        <a href="#pricing" class="btn btn-primary btn-lg">Get Started Today</a>
+        <a href="#syllabus" class="btn btn-outline btn-lg">See Course Syllabus</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-value" data-count="33">33</span>
+          <span class="stat-label">Institutional Videos</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">2</span>
+          <span class="stat-label">Professional Tracks</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">3</span>
+          <span class="stat-label">Delivery Packages</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT / WHY US -->
+  <section class="section about" id="about">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Why Bullstreet Academy</span>
+        <h2 class="section-title">You Will Never Succeed Using <span class="gradient-text">Retail Trading Strategies</span></h2>
+        <p class="section-sub">Retail technical analysis is nothing more than random lines. Institutions observe the real buyers and sellers. So do we.</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-card card">
+          <div class="card-icon">🧭</div>
+          <h3>Learn the Institutional Way</h3>
+          <p>Build your foundations around real market data — order flow, liquidity and depth of market — the exact frameworks professional trading firms use.</p>
+        </div>
+        <div class="about-card card">
+          <div class="card-icon">📊</div>
+          <h3>World-Class Order Flow Tools</h3>
+          <p>Get access to professional custom DOM and footprint software worth thousands, included free with your institutional training package.</p>
+        </div>
+        <div class="about-card card">
+          <div class="card-icon">🎯</div>
+          <h3>Structured, Track-Based Curriculum</h3>
+          <p>Two carefully engineered tracks — Retail and Institutional — each built to take you from foundation to execution with zero fluff.</p>
+        </div>
+        <div class="about-card card">
+          <div class="card-icon">🤝</div>
+          <h3>Full Lifetime Support</h3>
+          <p>Premium packages include full lifetime support from our tutoring team, with all future curriculum updates included free of charge.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRACKS OVERVIEW -->
+  <section class="section tracks">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Choose Your Track</span>
+        <h2 class="section-title">Two Tracks. <span class="gradient-text">One Goal: Profitable Trading.</span></h2>
+        <p class="section-sub">Packages are track-agnostic — choose any delivery model with either track. All tiers remain functional across both foundations.</p>
+      </div>
+      <div class="tracks-grid">
+        <div class="track-card card" data-track="retail">
+          <div class="track-tag">Track 1</div>
+          <h3 class="track-name">Retail Trader Track</h3>
+          <p class="track-desc">Master charting software, map institutional liquidities and build stable support/resistance baselines. 4-week structured syllabus.</p>
+          <ul class="track-features">
+            <li>Charting Architectures</li>
+            <li>Key Level Architecture</li>
+            <li>Technical Indicators &amp; Strategies</li>
+            <li>Session Liquidity &amp; Psychology</li>
+          </ul>
+          <a href="#syllabus" class="btn btn-outline">View Syllabus</a>
+        </div>
+        <div class="track-card card featured" data-track="institutional">
+          <div class="track-tag">Track 2</div>
+          <h3 class="track-name">Institutional Track <span class="pill-popular">Recommended</span></h3>
+          <p class="track-desc">33 enterprise-grade videos across 2 phases. Depth of Market mastery, order flow and advanced execution. Includes free custom DOM worth $2,500.</p>
+          <ul class="track-features">
+            <li>Foundation &amp; DOM Mastery · 21 Videos</li>
+            <li>Order Flow &amp; Execution · 12 Videos</li>
+            <li>Free Custom DOM ($2,500 value)</li>
+            <li>All Future Technical Updates</li>
+          </ul>
+          <a href="#syllabus" class="btn btn-primary">View Syllabus</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SYLLABUS -->
+  <section class="section syllabus" id="syllabus">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Course Syllabus</span>
+        <h2 class="section-title">The <span class="gradient-text">Full Curriculum</span></h2>
+        <p class="section-sub">Every module, laid out in detail. Choose your track to explore its complete syllabus.</p>
+      </div>
+
+      <div class="syllabus-tabs">
+        <button class="tab-btn active" data-tab="retail">Retail Trader Track</button>
+        <button class="tab-btn" data-tab="institutional">Institutional Track</button>
+      </div>
+
+      <!-- RETAIL TAB -->
+      <div class="tab-panel active" id="tab-retail">
+        <div class="week-grid">
+
+          <div class="week card">
+            <div class="week-head">
+              <span class="week-num">Week 1</span>
+              <h3>Core Foundations &amp; Platform Setup</h3>
+            </div>
+            <div class="week-section">
+              <h4>Section 1: Platform Onboarding</h4>
+              <ul>
+                <li><span class="li-title">1.1 Trading Roadblocks</span> — Identify common strategic mistakes, time constraints and psychological triggers via an initial onboarding questionnaire.</li>
+                <li><span class="li-title">1.2 Tech Setup</span> — System architecture installation for MT4, MT5 and TradingView.</li>
+                <li><span class="li-title">1.3 Placing Orders</span> — Practical execution covering Market, Limit, Stop-Loss and Take-Profit systems.</li>
+              </ul>
+            </div>
+            <div class="week-section">
+              <h4>Section 2: Key Level Architecture</h4>
+              <ul>
+                <li><span class="li-title">2.1 Support &amp; Resistance</span> — Drawing precision horizontal levels across multiple asset classes.</li>
+                <li><span class="li-title">2.2 Level Validation</span> — Differentiating high-probability structural levels from weak retail traps.</li>
+              </ul>
+            </div>
+            <div class="homework"><strong>Homework:</strong> Map daily and 4-hour key structural levels on EUR/USD.</div>
+          </div>
+
+          <div class="week card">
+            <div class="week-head">
+              <span class="week-num">Week 2</span>
+              <h3>Market Trends &amp; Chart Patterns</h3>
+            </div>
+            <div class="week-section">
+              <h4>Section 3: Currency Profiling</h4>
+              <ul>
+                <li><span class="li-title">3.1 Forex Pairs</span> — Statistical profiling of Major, Minor and Exotic asset volatility frameworks.</li>
+                <li><span class="li-title">3.2 Multi-Timeframe Edge</span> — Top-down alignment: Daily for trend, 1-Hour for structure, 15-Minute for precision entries.</li>
+              </ul>
+            </div>
+            <div class="week-section">
+              <h4>Section 4: Trend &amp; Pattern Analysis</h4>
+              <ul>
+                <li><span class="li-title">4.1 Market Trends</span> — Technical identification of Uptrends, Downtrends and Ranging environments.</li>
+                <li><span class="li-title">4.2 Chart Patterns</span> — Head &amp; Shoulders, Double Tops/Bottoms, Flags and Triangles.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="week card">
+            <div class="week-head">
+              <span class="week-num">Week 3</span>
+              <h3>Technical Indicators &amp; Kenny Black Strategies</h3>
+            </div>
+            <div class="week-section">
+              <h4>Section 5: Advanced Technical Toolkit</h4>
+              <ul>
+                <li><span class="li-title">5.1 Moving Averages</span> — Deploying and backtesting the 50 &amp; 200 EMA.</li>
+                <li><span class="li-title">5.2 Supply &amp; Demand</span> — Locating and grading institutional high-probability zones.</li>
+                <li><span class="li-title">5.3 Trendlines &amp; Fibonacci</span> — Geometric trendlines alongside golden ratio retracements.</li>
+                <li><span class="li-title">5.4 Market Structure</span> — Break of Structure (BOS) and Change of Character (CHOCH).</li>
+              </ul>
+            </div>
+            <div class="week-section">
+              <h4>Section 6: Execution &amp; Risk Management</h4>
+              <ul>
+                <li><span class="li-title">6.1 Reversal Strategy</span> — Trading trapped market players and liquidity sweeps.</li>
+                <li><span class="li-title">6.2 Continuation Strategy</span> — High-probability pullbacks and momentum breakouts.</li>
+                <li><span class="li-title">6.3 Risk Rules</span> — Strict 1-2% risk metrics and lot size calculations.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="week card">
+            <div class="week-head">
+              <span class="week-num">Week 4</span>
+              <h3>Session Liquidity &amp; Psychology</h3>
+            </div>
+            <div class="week-section">
+              <h4>Section 7: Sessions &amp; Workspaces</h4>
+              <ul>
+                <li><span class="li-title">7.1 Global Sessions</span> — Volume and liquidity across Asian, London and New York sessions.</li>
+                <li><span class="li-title">7.2 Layout Optimization</span> — Structuring screen layouts to filter noise.</li>
+              </ul>
+            </div>
+            <div class="week-section">
+              <h4>Section 8: Psychology &amp; Capstone</h4>
+              <ul>
+                <li><span class="li-title">8.1 Discipline Mastery</span> — Overcoming Fear, Greed and Revenge Trading.</li>
+                <li><span class="li-title">8.2 Full Market Blueprint</span> — End-to-end multi-variable top-down analysis.</li>
+              </ul>
+            </div>
+            <div class="graduation">🎓 <strong>Graduation:</strong> Submit an institutional-grade personalized trading plan + execution checklist.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- INSTITUTIONAL TAB -->
+      <div class="tab-panel" id="tab-institutional">
+        <div class="inst-header card">
+          <div class="inst-summary">
+            <div class="inst-vol">33 <span>Enterprise-Grade Modules</span></div>
+            <div class="inst-asset">🎁 <strong>Free Custom DOM Software</strong> — Retail valuation <strong>$2,500</strong> + all future technical updates.</div>
+          </div>
+        </div>
+
+        <div class="phase-block">
+          <div class="phase-head">
+            <span class="phase-num">Phase 1</span>
+            <h3>Foundation &amp; DOM Mastery</h3>
+            <span class="phase-count">21 Videos</span>
+          </div>
+          <div class="phase-section card">
+            <h4>Section 1 · Introduction &amp; What to Expect <span class="vcount">3 videos</span></h4>
+            <p>Welcome, Process 0-100%, Operational Timetable.</p>
+          </div>
+          <div class="phase-section card">
+            <h4>Section 2 · Trading Data: Institutional Perspective <span class="vcount">2 videos</span></h4>
+            <p>Trading as a Business, Retail vs. Institutional Gap.</p>
+          </div>
+          <div class="phase-section card">
+            <h4>Section 3 · Trading Data: Going Deeper <span class="vcount">4 videos</span></h4>
+            <p>Real World Mechanics, The Trader Journey, Key Ecosystem Components.</p>
+          </div>
+          <div class="phase-section card">
+            <h4>Section 4 · Market Observation Like a Professional <span class="vcount">3 videos</span></h4>
+            <p>DOM Exercise P1 &amp; P2, Consolidating Institutional Data Flows.</p>
+          </div>
+          <div class="phase-section card">
+            <h4>Section 5 · Depth of Market Full Installation <span class="vcount">8 videos</span></h4>
+            <p>Installation Intro, Platform Comparison, Parts 1-5, Contract Selection.</p>
+          </div>
+        </div>
+
+        <div class="phase-block">
+          <div class="phase-head">
+            <span class="phase-num">Phase 2</span>
+            <h3>Order Flow &amp; Execution Mastery</h3>
+            <span class="phase-count">12 Videos</span>
+          </div>
+          <div class="phase-section card">
+            <h4>Section 1 · Footprint Chart Architecture <span class="vcount">3 videos</span></h4>
+            <p>Bid/Ask, Delta, Volume Clusters, Imbalance Mechanics.</p>
+          </div>
+          <div class="phase-section card">
+            <h4>Section 2 · Tracking Aggressive &amp; Passive Behavior <span class="vcount">3 videos</span></h4>
+            <p>Aggressive Orders, Delta Spikes, Passive Absorption, Exhaustion vs. Absorption.</p>
+          </div>
+          <div class="phase-section card">
+            <h4>Section 3 · Trade Validation &amp; Contextual Integration <span class="vcount">3 videos</span></h4>
+            <p>Validating Structural Levels, DOM + Footprint Confluence, Faked Breakouts.</p>
+          </div>
+          <div class="phase-section card">
+            <h4>Section 4 · Workspace Optimization &amp; Execution Design <span class="vcount">3 videos</span></h4>
+            <p>Professional Template Setup, Filtering Structural Noise, Execution Blueprint Checklist.</p>
+          </div>
+        </div>
+
+        <div class="inst-funnel card">
+          <h4>User Funnel Architecture</h4>
+          <p>Choose your track → Select your delivery package. Both foundational tracks remain fully functional across all delivery models.</p>
+          <div class="funnel-row">
+            <div class="funnel-step">1. Choose Track <span>Retail OR Institutional</span></div>
+            <div class="funnel-arrow">→</div>
+            <div class="funnel-step">2. Select Package <span>5-Day / One Month / Video Sessions</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section pricing" id="pricing">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Pricing</span>
+        <h2 class="section-title">Invest In <span class="gradient-text">Your Trading Future</span></h2>
+        <p class="section-sub">Track-agnostic packages. Choose a delivery model that suits how you learn best.</p>
+      </div>
+
+      <div class="pricing-tabs">
+        <button class="tab-btn active" data-tab="retail-price">Retail</button>
+        <button class="tab-btn" data-tab="inst-price">Institutional</button>
+      </div>
+
+      <!-- RETAIL PRICING -->
+      <div class="price-grid active" id="price-retail">
+        <div class="price-card card">
+          <div class="price-badge">Self-Paced</div>
+          <h3 class="price-name">Video Sessions</h3>
+          <div class="price-amount">$170 <span>/ one-time</span></div>
+          <p class="price-desc">Fully self-paced high-definition video archive. Best for flexible learners.</p>
+          <ul class="price-features">
+            <li>Self-paced HD video archive</li>
+            <li>Core recorded video modules</li>
+            <li>Upgradeable anytime via top-up</li>
+            <li>Monthly subscription for ongoing updates</li>
+          </ul>
+          <a href="#join" class="btn btn-outline join-btn" data-plan="Retail Video Sessions" data-price="170">Choose Plan</a>
+        </div>
+
+        <div class="price-card card popular">
+          <div class="price-badge popular-badge">Most Popular</div>
+          <h3 class="price-name">4 Weeks Package</h3>
+          <div class="price-amount">$249 <span>/ one-time</span></div>
+          <p class="price-desc">High-engagement framework. The complete 4-week retail syllabus live.</p>
+          <ul class="price-features">
+            <li>High-engagement live framework</li>
+            <li>Full retail 4-week syllabus</li>
+            <li>Full lifetime support</li>
+            <li>Zero recurring monthly fees</li>
+            <li>All future updates free</li>
+          </ul>
+          <a href="#join" class="btn btn-primary join-btn" data-plan="Retail 4 Weeks Package" data-price="249">Choose Plan</a>
+        </div>
+
+        <div class="price-card card">
+          <div class="price-badge">Fast-Paced</div>
+          <h3 class="price-name">5-Day Intensive</h3>
+          <div class="price-amount">$200 <span>/ one-time</span></div>
+          <p class="price-desc">Fast-paced live delivery. Complete retail syllabus in 5 days.</p>
+          <ul class="price-features">
+            <li>Fast-paced live delivery</li>
+            <li>Full retail syllabus condensed</li>
+            <li>Full lifetime support</li>
+            <li>Zero recurring monthly fees</li>
+          </ul>
+          <a href="#join" class="btn btn-outline join-btn" data-plan="Retail 5-Day Intensive" data-price="200">Choose Plan</a>
+        </div>
+      </div>
+
+      <!-- INSTITUTIONAL PRICING -->
+      <div class="price-grid" id="price-inst">
+        <div class="price-card card">
+          <div class="price-badge">Self-Paced</div>
+          <h3 class="price-name">Video Sessions</h3>
+          <div class="price-amount">$1,000 <span>/ one-time</span></div>
+          <p class="price-desc">All 33 institutional videos, self-paced. Free Custom DOM included.</p>
+          <ul class="price-features">
+            <li>All 33 institutional videos</li>
+            <li>Self-paced HD format</li>
+            <li>Free Custom DOM ($2,500 value)</li>
+            <li>Upgradeable via top-up</li>
+            <li>Monthly subscription for future updates</li>
+          </ul>
+          <a href="#join" class="btn btn-outline join-btn" data-plan="Institutional Video Sessions" data-price="1000">Choose Plan</a>
+        </div>
+
+        <div class="price-card card popular">
+          <div class="price-badge popular-badge">Most Popular</div>
+          <h3 class="price-name">4 Weeks Package</h3>
+          <div class="price-amount">$1,400 <span>/ one-time</span></div>
+          <p class="price-desc">High-engagement framework for the full institutional syllabus.</p>
+          <ul class="price-features">
+            <li>High-engagement live framework</li>
+            <li>Full institutional syllabus</li>
+            <li>Full lifetime support</li>
+            <li>Free Custom DOM ($2,500 value)</li>
+            <li>Zero recurring monthly fees</li>
+          </ul>
+          <a href="#join" class="btn btn-primary join-btn" data-plan="Institutional 4 Weeks Package" data-price="1400">Choose Plan</a>
+        </div>
+
+        <div class="price-card card">
+          <div class="price-badge">Fast-Paced</div>
+          <h3 class="price-name">5-Day Intensive</h3>
+          <div class="price-amount">$1,390 <span>/ one-time</span></div>
+          <p class="price-desc">Fast-paced live delivery of the institutional curriculum.</p>
+          <ul class="price-features">
+            <li>Fast-paced live delivery</li>
+            <li>Full institutional syllabus</li>
+            <li>Full lifetime support</li>
+            <li>Free Custom DOM ($2,500 value)</li>
+          </ul>
+          <a href="#join" class="btn btn-outline join-btn" data-plan="Institutional 5-Day Intensive" data-price="1390">Choose Plan</a>
+        </div>
+      </div>
+
+      <div class="support-policy card">
+        <h4>📋 Standardized Support Policy</h4>
+        <div class="support-grid">
+          <div class="support-col">
+            <h5>Premium Live Tiers <span>(5-Day &amp; 4-Weeks)</span></h5>
+            <ul>
+              <li>Full lifetime support from tutoring team</li>
+              <li>Perpetual access, zero monthly fees</li>
+              <li>All future curriculum extensions free</li>
+            </ul>
+          </div>
+          <div class="support-col">
+            <h5>Self-Paced Tier <span>(Video Sessions)</span></h5>
+            <ul>
+              <li>Core recorded video modules only</li>
+              <li>Ongoing support requires monthly subscription</li>
+              <li>Upgrade anytime via tuition differential top-up</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOIN / REGISTER MODAL TRIGGER -->
+  <section class="section join" id="join">
+    <div class="container join-inner card">
+      <h2 class="join-title">Ready To Trade Like An Institution?</h2>
+      <p class="join-sub">Enroll today. After payment, you'll receive your login credentials via email — then access your chosen track and package instantly.</p>
+      <div class="join-steps">
+        <div class="join-step"><span>1</span> Choose your plan above</div>
+        <div class="join-step"><span>2</span> Pay securely</div>
+        <div class="join-step"><span>3</span> Receive email + password</div>
+        <div class="join-step"><span>4</span> Log in &amp; start learning</div>
+      </div>
+      <a href="#pricing" class="btn btn-primary btn-lg">Enroll Now</a>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section faq" id="faq">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2 class="section-title">Frequently Asked <span class="gradient-text">Questions</span></h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item card">
+          <button class="faq-question">I have little or no trading experience — will I struggle? <span class="faq-icon">+</span></button>
+          <div class="faq-answer"><p>Absolutely not. Most students begin with very little experience. Both tracks are designed to build from the ground up. The Retail track starts with core foundations, while the Institutional track assumes no prior institutional knowledge. A clean slate is often an advantage.</p></div>
+        </div>
+        <div class="faq-item card">
+          <button class="faq-question">What is the difference between the Retail and Institutional tracks? <span class="faq-icon">+</span></button>
+          <div class="faq-answer"><p>The Retail track focuses on mastering charting software, technical analysis, market structure, indicators, risk management and trading psychology over 4 weeks. The Institutional track goes deeper into Depth of Market (DOM), order flow and footprint charts across 33 videos — the tools professional firms use.</p></div>
+        </div>
+        <div class="faq-item card">
+          <button class="faq-question">Which delivery package should I choose? <span class="faq-icon">+</span></button>
+          <div class="faq-answer"><p>Choose based on how you learn best: <strong>5-Day Intensive</strong> for fast-paced live delivery, <strong>4-Weeks Package</strong> (most popular) for a high-engagement framework with more time, or <strong>Video Sessions</strong> for fully self-paced learning. All cover the same curriculum.</p></div>
+        </div>
+        <div class="faq-item card">
+          <button class="faq-question">How do I access the course after enrolling? <span class="faq-icon">+</span></button>
+          <div class="faq-answer"><p>After your payment is confirmed, you'll receive a login email and password. Use the <strong>Student Login</strong> button on this page to sign in, choose the style you paid for (Retail or Institutional), and you'll be taken straight to your student portal where all your enrolled content lives.</p></div>
+        </div>
+        <div class="faq-item card">
+          <button class="faq-question">Are there any recurring fees? <span class="faq-icon">+</span></button>
+          <div class="faq-answer"><p>Premium live tiers (5-Day and 4-Weeks) have <strong>zero recurring monthly fees</strong> — you get full lifetime support and access. The self-paced Video Sessions tier requires an active monthly subscription for ongoing instructional assistance and updates, but can be upgraded to a premium tier anytime via top-up.</p></div>
+        </div>
+        <div class="faq-item card">
+          <button class="faq-question">Do the Institutional packages really include free software? <span class="faq-icon">+</span></button>
+          <div class="faq-answer"><p>Yes. Every Institutional package includes a <strong>free custom Depth of Market (DOM) software template</strong> valued at $2,500, plus all future technical updates. This is included across all three delivery models.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="logo.jpeg" alt="Bullstreet Academy" class="footer-logo">
+        <p>Professional trading education. Retail &amp; institutional tracks delivered the way institutions operate.</p>
+      </div>
+      <div class="footer-links">
+        <h5>Site</h5>
+        <a href="#about">Why Us</a>
+        <a href="#syllabus">Syllabus</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="footer-links">
+        <h5>Access</h5>
+        <a href="#" class="footer-login">Student Login</a>
+        <a href="#join">Enroll</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="disclaimer">RISK DISCLOSURE: Trading involves substantial risk. Past performance is not indicative of future results. Educational content only — not financial advice.</p>
+    </div>
+  </footer>
+
+  <!-- LOGIN MODAL -->
+  <div class="modal-overlay" id="login-modal">
+    <div class="modal login-modal">
+      <button class="modal-close" data-close="login-modal">×</button>
+      <div class="modal-head">
+        <img src="logo.jpeg" alt="Bullstreet Academy" class="modal-logo">
+        <h3>Student Login</h3>
+        <p>Sign in to access your course portal.</p>
+      </div>
+      <form id="login-form">
+        <label for="login-email">Email Address</label>
+        <input type="email" id="login-email" placeholder="you@example.com" required>
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" required>
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+        <p class="login-hint">New? <a href="#join">Enroll now</a> to receive your credentials.</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- SIGNUP / REGISTER MODAL -->
+  <div class="modal-overlay" id="join-modal">
+    <div class="modal join-modal">
+      <button class="modal-close" data-close="join-modal">×</button>
+      <div class="modal-head">
+        <img src="logo.jpeg" alt="Bullstreet Academy" class="modal-logo">
+        <h3>Complete Your Enrollment</h3>
+        <p id="join-plan-label">Selected plan</p>
+      </div>
+      <form id="join-form">
+        <label for="join-name">Full Name</label>
+        <input type="text" id="join-name" placeholder="Your full name" required>
+        <label for="join-email">Email Address</label>
+        <input type="email" id="join-email" placeholder="you@example.com" required>
+        <div class="join-amount">
+          <span>Plan Total</span>
+          <strong id="join-total">$0</strong>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Proceed to Payment</button>
+        <p class="login-hint">After payment, you'll receive login credentials by email.</p>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Portal | Bullstreet Academy</title>
+  <link rel="icon" type="image/jpeg" href="logo.jpeg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { padding-top: 72px; }
+    .portal-hero { background: var(--bg-gradient), var(--bg); }
+    .portal-welcome { text-align: center; padding: 60px 0 40px; }
+    .portal-welcome .portal-logo { height: 70px; width: 70px; border-radius: 16px; object-fit: cover; margin: 0 auto 20px; display: block; border: 1px solid var(--border); }
+    .portal-welcome h1 { font-family: 'Sora', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; }
+    .portal-welcome p { color: var(--text-muted); max-width: 560px; margin: 12px auto 0; }
+
+    .track-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto 40px;
+    }
+
+    .portal-grid { max-width: 900px; margin: 0 auto 60px; display: none; }
+    .portal-grid.active { display: block; animation: fadeIn 0.4s ease; }
+
+    .portal-card { margin-bottom: 20px; padding: 26px; }
+    .portal-card h3 { font-family: 'Sora', sans-serif; font-size: 1.25rem; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .portal-card h4 { font-size: 0.8rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px; }
+    .portal-card .desc { color: var(--text-muted); font-size: 0.9rem; }
+
+    .lesson-list { list-style: none; }
+    .lesson-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+    .lesson-list li::before { content: '🎬'; }
+    .lesson-list li.meta { color: var(--text-muted); font-size: 0.85rem; }
+    .lesson-list li.meta::before { content: '📁'; }
+
+    .badge { font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+    .badge-live { background: rgba(34,197,94,0.12); color: var(--green); }
+    .badge-paced { background: rgba(212,175,55,0.12); color: var(--gold); }
+
+    .completed-bar {
+      height: 8px;
+      background: var(--bg-3);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 14px 0 6px;
+    }
+    .completed-bar span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--green), var(--green-2));
+      transition: width 0.6s ease;
+    }
+    .progress-label { font-size: 0.85rem; color: var(--text-muted); display: flex; justify-content: space-between; }
+
+    .logout-btn { margin-left: auto; }
+
+    @media (max-width: 720px) {
+      .track-selector { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand">
+        <img src="logo.jpeg" alt="Bullstreet Academy" class="brand-logo">
+        <span class="brand-text">BULLSTREET<span class="brand-accent">ACADEMY · STUDENT PORTAL</span></span>
+      </a>
+      <div class="nav-actions">
+        <a href="index.html" class="btn btn-ghost btn-sm">Back to Site</a>
+        <a href="#" class="btn btn-primary btn-sm logout-btn" id="logout-btn">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="portal-hero">
+    <div class="container">
+      <div class="portal-welcome">
+        <img src="logo.jpeg" alt="Bullstreet Academy" class="portal-logo">
+        <h1>Welcome to your <span class="gradient-text">Bullstreet Academy</span> Portal</h1>
+        <p id="portal-user">Select the track you enrolled in to access your course content.</p>
+      </div>
+
+      <div class="track-selector">
+        <a href="#" class="track-card card" id="select-retail">
+          <div class="track-tag">Retail Track</div>
+          <h3 class="track-name">Retail Trader Track</h3>
+          <p class="track-desc">4-week syllabus — charting, structure, indicators, psychology.</p>
+          <span class="btn btn-outline">Open Retail Content</span>
+        </a>
+        <a href="#" class="track-card card featured" id="select-inst">
+          <div class="track-tag">Institutional Track</div>
+          <h3 class="track-name">Institutional Track</h3>
+          <p class="track-desc">33 videos — DOM mastery + order flow &amp; execution.</p>
+          <span class="btn btn-primary">Open Institutional Content</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- RETAIL CONTENT -->
+  <section class="container portal-grid" id="portal-retail">
+    <div class="portal-card card">
+      <h3>Retail Trader Track <span class="badge badge-live" id="retail-badge">Live Tier</span></h3>
+      <p class="desc">Master charting software architectures, map institutional liquidities and establish stable support/resistance baselines across 4 weeks.</p>
+      <div class="completed-bar"><span id="retail-progress"></span></div>
+      <div class="progress-label"><span>Course progress</span><span id="retail-progress-label">0%</span></div>
+    </div>
+
+    <div class="portal-card card">
+      <h3>Week 1 · Core Foundations &amp; Platform Setup</h3>
+      <ul class="lesson-list">
+        <li>1.1 Trading Roadblocks (Questionnaire)</li>
+        <li>1.2 Tech Setup — MT4 / MT5 / TradingView</li>
+        <li>1.3 Placing Orders — Market, Limit, SL, TP</li>
+        <li>2.1 Support &amp; Resistance Key Levels</li>
+        <li>2.2 Level Validation</li>
+      </ul>
+    </div>
+
+    <div class="portal-card card">
+      <h3>Week 2 · Market Trends &amp; Chart Patterns</h3>
+      <ul class="lesson-list">
+        <li>3.1 Forex Pairs Profiling</li>
+        <li>3.2 Multi-Timeframe Edge</li>
+        <li>4.1 Market Trends</li>
+        <li>4.2 Chart Patterns — H&amp;S, Double Tops, Flags</li>
+      </ul>
+    </div>
+
+    <div class="portal-card card">
+      <h3>Week 3 · Technical Indicators &amp; Strategies</h3>
+      <ul class="lesson-list">
+        <li>5.1 Moving Averages — 50 &amp; 200 EMA</li>
+        <li>5.2 Supply &amp; Demand</li>
+        <li>5.3 Trendlines &amp; Fibonacci</li>
+        <li>5.4 Market Structure — BOS &amp; CHOCH</li>
+        <li>6.1 Reversal Strategy</li>
+        <li>6.2 Continuation Strategy</li>
+        <li>6.3 Risk Rules — 1-2% Risk</li>
+      </ul>
+    </div>
+
+    <div class="portal-card card">
+      <h3>Week 4 · Session Liquidity &amp; Psychology</h3>
+      <ul class="lesson-list">
+        <li>7.1 Global Sessions — Asian, London, New York</li>
+        <li>7.2 Layout Optimization</li>
+        <li>8.1 Discipline Mastery — Fear, Greed, Revenge</li>
+        <li>8.2 Full Market Blueprint</li>
+      </ul>
+      <h4>Graduation Requirement</h4>
+      <ul class="lesson-list">
+        <li class="meta">Submit institutional-grade personalized trading plan + execution checklist</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- INSTITUTIONAL CONTENT -->
+  <section class="container portal-grid" id="portal-institutional">
+    <div class="portal-card card">
+      <h3>Institutional Track <span class="badge badge-live" id="inst-badge">Live Tier</span></h3>
+      <p class="desc">33 enterprise-grade modules across 2 phases. Includes your free custom Depth of Market (DOM) software worth $2,500.</p>
+      <div class="completed-bar"><span id="inst-progress"></span></div>
+      <div class="progress-label"><span>Course progress</span><span id="inst-progress-label">0%</span></div>
+    </div>
+
+    <div class="portal-card card">
+      <h3>Phase 1 · Foundation &amp; DOM Mastery <span class="badge badge-paced">21 Videos</span></h3>
+      <ul class="lesson-list">
+        <li>Section 1 · Introduction &amp; What to Expect (3)</li>
+        <li>Section 2 · Trading Data: Institutional Perspective (2)</li>
+        <li>Section 3 · Trading Data: Going Deeper (4)</li>
+        <li>Section 4 · Market Observation Like a Professional (3)</li>
+        <li>Section 5 · Depth of Market Full Installation (8)</li>
+      </ul>
+    </div>
+
+    <div class="portal-card card">
+      <h3>Phase 2 · Order Flow &amp; Execution Mastery <span class="badge badge-paced">12 Videos</span></h3>
+      <ul class="lesson-list">
+        <li>Section 1 · Footprint Chart Architecture (3)</li>
+        <li>Section 2 · Tracking Aggressive &amp; Passive Behavior (3)</li>
+        <li>Section 3 · Trade Validation &amp; Contextual Integration (3)</li>
+        <li>Section 4 · Workspace Optimization &amp; Execution Design (3)</li>
+      </ul>
+    </div>
+
+    <div class="portal-card card">
+      <h3>Included Assets</h3>
+      <ul class="lesson-list">
+        <li class="meta">Free Custom Depth of Market (DOM) template — $2,500 value</li>
+        <li class="meta">All future technical updates included</li>
+      </ul>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const user = JSON.parse(localStorage.getItem('bsa_logged_in') || '{}');
+
+      if (user.email) {
+        document.getElementById('portal-user').textContent = 'Signed in as ' + user.email + '. Select the track you enrolled in to access your course content.';
+      }
+
+      function showTrack(track) {
+        document.querySelectorAll('.portal-grid').forEach(g => g.classList.remove('active'));
+        if (track === 'retail') {
+          document.getElementById('portal-retail').classList.add('active');
+          document.getElementById('retail-badge').textContent = localStorage.getItem('bsa_package') || 'Enrolled';
+          animate('retail');
+        } else {
+          document.getElementById('portal-institutional').classList.add('active');
+          document.getElementById('inst-badge').textContent = localStorage.getItem('bsa_package') || 'Enrolled';
+          animate('inst');
+        }
+        document.getElementById('select-retail').style.borderColor = track === 'retail' ? 'var(--green)' : '';
+        document.getElementById('select-inst').style.borderColor = track === 'institutional' ? 'var(--green)' : '';
+        localStorage.setItem('bsa_track', track);
+      }
+
+      function animate(prefix) {
+        const p = localStorage.getItem('bsa_progress_' + prefix);
+        if (p === null) {
+          localStorage.setItem('bsa_progress_' + prefix, 5);
+        }
+        const val = parseInt(localStorage.getItem('bsa_progress_' + prefix) || '0', 10);
+        const bar = document.getElementById(prefix + '-progress');
+        const label = document.getElementById(prefix + '-progress-label');
+        if (bar && label) {
+          bar.style.width = val + '%';
+          label.textContent = val + '%';
+        }
+      }
+
+      document.getElementById('select-retail').addEventListener('click', function (e) {
+        e.preventDefault();
+        showTrack('retail');
+        window.scrollTo({ top: 400, behavior: 'smooth' });
+      });
+      document.getElementById('select-inst').addEventListener('click', function (e) {
+        e.preventDefault();
+        showTrack('institutional');
+        window.scrollTo({ top: 400, behavior: 'smooth' });
+      });
+
+      document.getElementById('logout-btn').addEventListener('click', function (e) {
+        e.preventDefault();
+        localStorage.removeItem('bsa_logged_in');
+        window.location.href = 'index.html';
+      });
+
+      const preset = params.get('track') || localStorage.getItem('bsa_track');
+      if (preset) showTrack(preset);
+    })();
+  </script>
+
+</body>
+</html>
