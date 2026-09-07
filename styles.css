@@ -269,14 +269,6 @@ body {
   object-fit: cover;
 }
 
-/* ---------- SALESMAN STORY ---------- */
-
-.salesman-story { background: var(--bg); }
-.story-content { max-width: 860px; margin: 0 auto; border-left: 3px solid var(--gold); }
-.story-text { color: var(--text-muted); font-size: 1.02rem; line-height: 1.8; margin-bottom: 18px; }
-.story-text:last-child { margin-bottom: 0; }
-.story-text strong { color: var(--text); }
-
 /* ---------- MENTOR ---------- */
 
 .mentor { background: var(--bg-2); }
