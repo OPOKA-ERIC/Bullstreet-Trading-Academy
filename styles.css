@@ -252,6 +252,78 @@ body {
 .about-card h3 { font-family: 'Sora', sans-serif; font-size: 1.15rem; margin-bottom: 8px; }
 .about-card p { color: var(--text-muted); font-size: 0.95rem; }
 
+/* ---------- ABOUT ME ---------- */
+
+.about-me { background: var(--bg-2); }
+.about-me-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 48px; align-items: center; }
+.about-me-content .section-title { text-align: left; margin-bottom: 20px; }
+.about-me-text { color: var(--text-muted); font-size: 1.02rem; margin-bottom: 16px; line-height: 1.7; }
+.about-me-text strong { color: var(--text); }
+.about-me-image { text-align: center; }
+.about-me-image img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow);
+  object-fit: cover;
+}
+
+/* ---------- SALESMAN STORY ---------- */
+
+.salesman-story { background: var(--bg); }
+.story-content { max-width: 860px; margin: 0 auto; border-left: 3px solid var(--gold); }
+.story-text { color: var(--text-muted); font-size: 1.02rem; line-height: 1.8; margin-bottom: 18px; }
+.story-text:last-child { margin-bottom: 0; }
+.story-text strong { color: var(--text); }
+
+/* ---------- MENTOR ---------- */
+
+.mentor { background: var(--bg-2); }
+.mentor-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 48px; align-items: center; }
+.mentor-image { text-align: center; }
+.mentor-image img {
+  width: 100%;
+  max-width: 380px;
+  border-radius: var(--radius);
+  border: 2px solid var(--green);
+  box-shadow: 0 0 40px rgba(34,197,94,0.15);
+  object-fit: cover;
+}
+.mentor-content .section-title { text-align: left; margin-bottom: 20px; }
+.mentor-text { color: var(--text-muted); font-size: 1.02rem; line-height: 1.7; margin-bottom: 28px; }
+.mentor-highlights { display: flex; flex-direction: column; gap: 18px; }
+.mentor-highlight {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: border-color 0.25s ease;
+}
+.mentor-highlight:hover { border-color: rgba(34,197,94,0.4); }
+.highlight-icon { font-size: 1.6rem; flex-shrink: 0; margin-top: 2px; }
+.mentor-highlight strong { display: block; font-family: 'Sora', sans-serif; font-size: 0.95rem; margin-bottom: 2px; }
+.mentor-highlight p { color: var(--text-muted); font-size: 0.88rem; margin: 0; }
+
+/* ---------- TARGET HISTORY ---------- */
+
+.target-history { background: var(--bg); }
+.target-image-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+.target-image {
+  width: 100%;
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow);
+  object-fit: cover;
+}
+
 /* ---------- TRACKS ---------- */
 
 .tracks { background: var(--bg-2); }
@@ -672,6 +744,15 @@ body {
 
 @media (max-width: 900px) {
   .about-grid { grid-template-columns: 1fr; }
+  .about-me-grid { grid-template-columns: 1fr; }
+  .about-me-content .section-title { text-align: center; }
+  .about-me-content { text-align: center; }
+  .about-me-image { order: -1; }
+  .mentor-grid { grid-template-columns: 1fr; }
+  .mentor-image { order: -1; }
+  .mentor-content .section-title { text-align: center; }
+  .mentor-content { text-align: center; }
+  .mentor-highlights { max-width: 500px; margin: 0 auto; }
   .tracks-grid { grid-template-columns: 1fr; }
   .week-grid { grid-template-columns: 1fr; }
   .price-grid { grid-template-columns: 1fr; }
@@ -704,6 +785,8 @@ body {
   .section-head { margin-bottom: 36px; }
   .section-sub { font-size: 0.95rem; }
   .card { padding: 22px; }
+  .about-me-image img { max-width: 280px; }
+  .mentor-image img { max-width: 280px; }
   .tab-btn { padding: 10px 18px; font-size: 0.85rem; }
   .inst-vol { font-size: 2.1rem; }
   .funnel-step { min-width: 100%; }
