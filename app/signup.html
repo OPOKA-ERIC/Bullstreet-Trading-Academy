@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up | Bullstreet Academy</title>
+  <link rel="icon" type="image/jpeg" href="../logo.jpeg">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="../index.html" class="brand">
+        <img src="../logo.jpeg" alt="Bullstreet Academy logo" class="brand-logo">
+        <span class="brand-text">BULLSTREET<span class="brand-accent">ACADEMY</span></span>
+      </a>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container" style="max-width: 480px">
+      <h2 class="section-title">Create Account</h2>
+      <form id="signup-form" class="form-card" style="display:flex;flex-direction:column;gap:12px;padding:24px;background:#0f1720;border:1px solid rgba(255,255,255,.08);border-radius:12px">
+        <div>
+          <label style="color:#cbd5e1;font-size:14px">Full Name</label>
+          <input type="text" id="full_name" required style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:#0b131a;color:#e2e8f0">
+        </div>
+        <div>
+          <label style="color:#cbd5e1;font-size:14px">Email</label>
+          <input type="email" id="email" required style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:#0b131a;color:#e2e8f0">
+        </div>
+        <div>
+          <label style="color:#cbd5e1;font-size:14px">Password</label>
+          <input type="password" id="password" required minlength="6" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:#0b131a;color:#e2e8f0">
+        </div>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+        <div id="msg" style="color:#94a3b8;font-size:14px"></div>
+        <a href="login.html" style="color:#38bdf8;font-size:14px">Already have an account? Login</a>
+      </form>
+    </div>
+  </section>
+
+  <script type="module" src="../js/auth.js"></script>
+</body>
+</html>

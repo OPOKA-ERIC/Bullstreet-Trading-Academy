@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Bullstreet Academy</title>
+  <link rel="icon" type="image/jpeg" href="../logo.jpeg">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="../index.html" class="brand">
+        <img src="../logo.jpeg" alt="Bullstreet Academy logo" class="brand-logo">
+        <span class="brand-text">BULLSTREET<span class="brand-accent">ACADEMY</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="assessment.html">Impulse Test</a>
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="grading.html" id="tutor-nav" style="display:none">Grading</a>
+      </nav>
+      <div class="nav-actions">
+        <button id="logout-btn" class="btn btn-ghost btn-sm">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <h1 class="section-title">Student Dashboard</h1>
+
+      <div style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+        <div class="form-card" style="padding:20px;background:#0f1720;border:1px solid rgba(255,255,255,.08);border-radius:12px">
+          <div style="color:#94a3b8;font-size:14px">Welcome</div>
+          <div style="color:#e2e8f0;font-size:20px;font-weight:700" id="profile-name">—</div>
+          <div style="color:#cbd5e1;margin-top:6px">Role: <span id="role">student</span></div>
+        </div>
+
+        <div class="form-card" style="padding:20px;background:#0f1720;border:1px solid rgba(255,255,255,.08);border-radius:12px">
+          <div style="color:#94a3b8;font-size:14px">Your Diagnosis</div>
+          <div style="color:#38bdf8;font-size:18px;font-weight:700" id="diag">Not taken yet</div>
+          <div style="color:#94a3b8;font-size:14px;margin-top:6px" id="latest-assess"></div>
+          <div style="margin-top:10px">
+            <a href="assessment.html" class="btn btn-primary btn-sm">Take Impulse Test</a>
+          </div>
+        </div>
+
+        <div class="form-card" style="padding:20px;background:#0f1720;border:1px solid rgba(255,255,255,.08);border-radius:12px">
+          <div style="color:#94a3b8;font-size:14px">Progress</div>
+          <div style="color:#e2e8f0;font-size:18px;font-weight:700" id="prog-count">0 passed • 0 tracked</div>
+          <div style="color:#94a3b8;font-size:14px;margin-top:6px">Tasks unlock after passing previous + verification.</div>
+        </div>
+
+        <div id="tutor-card" class="form-card" style="display:none;padding:20px;background:#0f1720;border:1px solid rgba(255,255,255,.08);border-radius:12px">
+          <div style="color:#94a3b8;font-size:14px">Tutor Panel</div>
+          <div style="color:#e2e8f0;font-size:18px;font-weight:700">Manual Grading Queue</div>
+          <div style="margin-top:10px">
+            <a href="grading.html" class="btn btn-primary btn-sm">Go to Grading</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:24px;color:#94a3b8;font-size:14px">Learning paths (prescription + tasks) can be built per diagnosis next. For now, use Grading/Tutor panel to create tasks if needed, or we’ll auto-seed a rehab path.</div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="brand-text">BULLSTREET<span class="brand-accent">ACADEMY</span></span>
+        <p class="small">Professional trading education. Built for transformation.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <a href="https://t.me/+bqYoAejxzANmOGY8" target="_blank" rel="noopener">Telegram</a>
+          <a href="https://www.youtube.com/@Bullstreetacademy" target="_blank" rel="noopener">YouTube</a>
+          <a href="https://www.instagram.com/__kenny_black?igsh=MWRkeHl5Z3ltYXdtNQ%3D%3D&utm_source=qr" target="_blank" rel="noopener">Instagram</a>
+          <a href="mailto:academybullstreet@gmail.com">Email</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="../js/auth.js"></script>
+  <script type="module" src="../js/dashboard.js"></script>
+</body>
+</html>

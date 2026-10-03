@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task | Bullstreet Academy</title>
+  <link rel="icon" type="image/jpeg" href="../logo.jpeg">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="../index.html" class="brand">
+        <img src="../logo.jpeg" alt="Bullstreet Academy logo" class="brand-logo">
+        <span class="brand-text">BULLSTREET<span class="brand-accent">ACADEMY</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+      </nav>
+      <div class="nav-actions">
+        <button id="logout-btn" class="btn btn-ghost btn-sm">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container" style="max-width: 900px">
+      <div style="margin-bottom:12px;color:#94a3b8"><a href="dashboard.html" style="color:#38bdf8">← Back to Dashboard</a></div>
+      <h1 class="section-title" id="task-title">Task</h1>
+      <div class="form-card" style="padding:22px;background:#0f1720;border:1px solid rgba(255,255,255,.08);border-radius:12px">
+        <div style="color:#cbd5e1;line-height:1.7;white-space:pre-wrap" id="task-instructions"></div>
+        <div id="rubric-wrap" style="margin-top:16px"></div>
+        <div style="margin-top:16px">
+          <label style="color:#cbd5e1;font-size:14px">Your Answer / Submission</label>
+          <textarea id="submission-text" rows="6" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:#0b131a;color:#e2e8f0"></textarea>
+        </div>
+        <div style="margin-top:12px">
+          <label style="color:#cbd5e1;font-size:14px">Upload Files (images/pdf if any)</label>
+          <input type="file" id="file-input" multiple style="color:#cbd5e1">
+        </div>
+        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <button id="submit-btn" class="btn btn-primary">Submit for Review</button>
+          <button id="redo-btn" class="btn btn-outline" style="display:none">Redo Task (Alternate Format)</button>
+          <div id="attempt-info" style="color:#94a3b8;font-size:14px"></div>
+        </div>
+        <div id="task-msg" style="color:#94a3b8;margin-top:10px"></div>
+      </div>
+
+      <div id="result-card" class="form-card" style="display:none;margin-top:16px;padding:20px;background:#0f1720;border:1px solid rgba(255,255,255,.08);border-radius:12px">
+        <div style="color:#38bdf8;font-weight:700" id="result-status"></div>
+        <div style="color:#cbd5e1;margin-top:8px" id="result-feedback"></div>
+        <div style="color:#cbd5e1;margin-top:8px" id="verify-info"></div>
+        <div style="margin-top:12px"><a href="dashboard.html" class="btn btn-primary btn-sm">Back to Dashboard</a></div>
+      </div>
+    </div>
+  </section>
+
+  <script type="module" src="../js/auth.js"></script>
+  <script type="module" src="../js/task.js"></script>
+</body>
+</html>
