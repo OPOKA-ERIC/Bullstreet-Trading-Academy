@@ -3,16 +3,41 @@
 -- It is IDEMPOTENT: safe to run against the existing project without losing data.
 
 -- ============================================================================
--- 0. Helper: current user's role (SECURITY DEFINER avoids RLS recursion)
+-- 0. Authorisation source of truth.
+-- The role lookup MUST NOT live in `profiles`: the profiles policy calls
+-- current_role(), so reading the role from profiles would re-enter that policy
+-- and Postgres aborts with "infinite recursion detected in policy for relation
+-- profiles" (42P17). user_roles has a plain `user_id = auth.uid()` policy and
+-- nothing ever reads another user's role row, so no cycle can form.
+-- profiles.role is kept in sync for the client; see the role-guard trigger.
 -- ============================================================================
+create table if not exists public.user_roles (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  role    text not null default 'student'
+);
+
+alter table public.user_roles enable row level security;
+
+drop policy if exists user_roles_select_own on public.user_roles;
+create policy user_roles_select_own on public.user_roles
+  for select using (user_id = auth.uid());
+
+drop policy if exists user_roles_update_admin on public.user_roles;
+create policy user_roles_update_admin on public.user_roles
+  for update using (public.current_role() in ('tutor','admin'))
+  with check (public.current_role() in ('tutor','admin'));
+
+drop policy if exists user_roles_insert_admin on public.user_roles;
+create policy user_roles_insert_admin on public.user_roles
+  for insert with check (public.current_role() in ('tutor','admin'));
+
 create or replace function public.current_role()
 returns text
 language sql
 stable
-security definer
 set search_path = public
 as $$
-  select role from public.profiles where id = auth.uid()
+  select role from public.user_roles where user_id = auth.uid()
 $$;
 
 grant execute on function public.current_role() to authenticated, anon;
@@ -180,7 +205,7 @@ create index if not exists assessment_results_user_idx
   on public.assessment_results (user_id, created_at desc);
 
 -- ============================================================================
--- 3. Auto-create a profile on signup (removes the race in js/auth.js)
+-- 3. Signup creates both rows; role changes are tutor-only and stay in sync
 -- ============================================================================
 create or replace function public.handle_new_user()
 returns trigger
@@ -192,6 +217,11 @@ begin
   insert into public.profiles (id, full_name)
   values (new.id, coalesce(new.raw_user_meta_data->>'full_name', ''))
   on conflict (id) do nothing;
+
+  insert into public.user_roles (user_id, role)
+  values (new.id, 'student')
+  on conflict (user_id) do nothing;
+
   return new;
 end;
 $$;
@@ -200,6 +230,42 @@ drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
+
+-- A student must not be able to promote themselves by updating their own
+-- profile row, so role changes are reverted unless the caller is a tutor.
+create or replace function public.guard_profile_role()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  -- auth.uid() is null when this runs from the SQL editor (direct table access),
+  -- so role management from the dashboard still works. Only requests coming
+  -- through PostgREST are guarded, which is where self-escalation would happen.
+  if auth.uid() is not null and new.role is distinct from old.role then
+    if public.current_role() not in ('tutor','admin') then
+      new.role := old.role;
+    else
+      insert into public.user_roles (user_id, role)
+      values (new.id, new.role)
+      on conflict (user_id) do update set role = excluded.role;
+    end if;
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists profiles_role_guard on public.profiles;
+create trigger profiles_role_guard
+  before update on public.profiles
+  for each row execute function public.guard_profile_role();
+
+-- Existing users
+insert into public.user_roles (user_id, role)
+select p.id, coalesce(nullif(p.role, ''), 'student')
+from public.profiles p
+on conflict (user_id) do update set role = excluded.role;
 
 -- ============================================================================
 -- 4. Row Level Security
