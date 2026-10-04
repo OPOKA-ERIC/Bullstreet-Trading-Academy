@@ -1,0 +1,11 @@
+# Supabase CLI local connection state (project ref, temp credentials)
+supabase/.temp/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
