@@ -98,26 +98,13 @@
     counters.forEach(c => observer.observe(c));
   }
 
-  /* ============ LOGIN FORM ============ */
+  /* ============ LOGIN FORM (legacy modal -> real Supabase auth) ============ */
   const loginForm = document.getElementById('login-form');
   if (loginForm) {
     loginForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      const email = document.getElementById('login-email').value.trim();
-      const password = document.getElementById('login-password').value.trim();
-      if (!email || !password) return;
-      // Persist minimal session for the student portal
-      localStorage.setItem('bsa_logged_in', JSON.stringify({ email: email }));
-      // Ask which track they enrolled in, then enter the portal
-      openTrackChoice(email);
+      window.location.href = 'app/login.html';
     });
-  }
-
-  function openTrackChoice(email) {
-    const track = confirm('Which track did you enroll in?\n\nClick OK for INSTITUTIONAL track\nClick Cancel for RETAIL track');
-    const t = track ? 'institutional' : 'retail';
-    localStorage.setItem('bsa_track', t);
-    window.location.href = 'student.html?track=' + t;
   }
 
   /* ============ JOIN FORM ============ */

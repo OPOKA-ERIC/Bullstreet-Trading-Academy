@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return
       }
       msg.textContent = 'Success. Redirecting...'
-      setTimeout(() => (window.location.href = '/app/dashboard.html'), 800)
+      setTimeout(() => (window.location.href = 'dashboard.html'), 800)
     })
   }
 
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         await ensureProfile(data.user.id, fullName)
       }
       msg.textContent = 'Account created. Check email if confirmation required. Redirecting...'
-      setTimeout(() => (window.location.href = '/app/dashboard.html'), 1200)
+      setTimeout(() => (window.location.href = 'dashboard.html'), 1200)
     })
   }
 
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     logoutBtn.addEventListener('click', async (e) => {
       e.preventDefault()
       await supabase.auth.signOut()
-      window.location.href = '/app/login.html'
+      window.location.href = 'login.html'
     })
   }
 })

@@ -1,5 +1,6 @@
 import { supabase } from './supabase-client.js'
 import { requireAuth } from './app-utils.js'
+import { humanDiag, pickTopDiag, ensurePrescription } from './prescription.js'
 
 let questions = []
 let currentIndex = 0
@@ -18,37 +19,6 @@ function clearTimer() {
 function show(el, v = true) {
   if (!el) return
   el.style.display = v ? '' : 'none'
-}
-
-function humanDiag(code) {
-  const map = {
-    'Revenge': 'Revenge Trader – Needs impulse control & rule enforcement.',
-    'FOMO': 'FOMO Trader – Needs patience & confirmation discipline.',
-    'Analysis_Paralysis': 'Analysis Paralysis – Needs action threshold & decision training.',
-    'Overconfidence': 'Overconfident Trader – Needs humility & risk discipline.',
-    'Overtrading': 'Overtrader – Needs selectivity & daily limits.',
-    'Fear_Of_Missing/Impatience': 'Impatient/Fearful Closer – Needs execution discipline.',
-    'Patience': 'Patient Tendency – Can be refined.',
-    'Action': 'Decisive Tendency – Can be refined.',
-    'Discipline': 'Disciplined Baseline – Solid foundation.'
-  }
-  if (code && map[code]) return map[code]
-  if (code) return code.replaceAll('_', ' ')
-  return 'Balanced. Focus on consistency.'
-}
-
-function pickTopDiag(tendencies) {
-  if (!tendencies) return null
-  let best = null
-  for (const k of Object.keys(tendencies)) {
-    const v = tendencies[k] || 0
-    if (!best || v > best.v) best = { k, v }
-    if (best && v === best.v && best.v > 0 && k === 'Discipline') best = { k, v }
-  }
-  if (!best || best.v <= 0) return 'Discipline'
-  const neg = ['Revenge','FOMO','Analysis_Paralysis','Overconfidence','Overtrading','Fear_Of_Missing/Impatience']
-  if (neg.includes(best.k)) return best.k
-  return best.k || 'Discipline'
 }
 
 async function savePartial() {
@@ -142,6 +112,7 @@ async function finish() {
     await supabase.from('profiles').update({
       diagnosis_code: top
     }).eq('id', session.user.id)
+    await ensurePrescription(session.user.id, top)
   }
 
   show(document.getElementById('test-wrap'), false)
@@ -205,6 +176,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (optA) optA.addEventListener('click', () => { clearTimer(); recordAnswer('A') })
   if (optB) optB.addEventListener('click', () => { clearTimer(); recordAnswer('B') })
   if (retake) retake.addEventListener('click', () => {
+    assessmentId = null
+    questions = []
+    answers = []
+    currentIndex = 0
+    startTs = null
     show(document.getElementById('result-wrap'), false)
     show(document.getElementById('intro'))
   })

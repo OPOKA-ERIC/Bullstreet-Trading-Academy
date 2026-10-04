@@ -60,7 +60,17 @@
         </div>
       </div>
 
-      <div style="margin-top:24px;color:#94a3b8;font-size:14px">Learning paths (prescription + tasks) can be built per diagnosis next. For now, use Grading/Tutor panel to create tasks if needed, or we’ll auto-seed a rehab path.</div>
+      <div style="margin-top:28px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+          <h2 style="font-family:'Sora',sans-serif;font-size:1.25rem;color:#e2e8f0">Your Prescription</h2>
+          <a href="assessment.html" class="btn btn-outline btn-sm">Retake Impulse Test</a>
+        </div>
+        <div id="rx-note" style="color:#94a3b8;font-size:14px;margin-bottom:14px"></div>
+        <div id="rx-list" style="display:grid;gap:12px"></div>
+        <div id="rx-empty" style="display:none;color:#94a3b8;padding:20px;background:#0f1720;border:1px solid rgba(255,255,255,.08);border-radius:12px">
+          No tasks are assigned to you yet. Take the Impulse Test to generate your prescription.
+        </div>
+      </div>
     </div>
   </section>
 

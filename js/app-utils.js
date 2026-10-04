@@ -1,6 +1,6 @@
 import { supabase } from './supabase-client.js'
 
-export async function requireAuth(redirectTo = '/app/login.html') {
+export async function requireAuth(redirectTo = 'login.html') {
   const { data: { session } } = await supabase.auth.getSession()
   if (!session) {
     window.location.href = redirectTo
@@ -9,10 +9,10 @@ export async function requireAuth(redirectTo = '/app/login.html') {
   return session
 }
 
-export async function requireTutor(redirectTo = '/app/dashboard.html') {
+export async function requireTutor(redirectTo = 'dashboard.html') {
   const { data: { session } } = await supabase.auth.getSession()
   if (!session) {
-    window.location.href = '/app/login.html'
+    window.location.href = 'login.html'
     return null
   }
   const { data: profile } = await supabase

@@ -30,11 +30,12 @@
       <div class="form-card" style="padding:22px;background:#0f1720;border:1px solid rgba(255,255,255,.08);border-radius:12px">
         <div style="color:#cbd5e1;line-height:1.7;white-space:pre-wrap" id="task-instructions"></div>
         <div id="rubric-wrap" style="margin-top:16px"></div>
+        <div id="mcq-wrap" style="margin-top:16px;display:none"></div>
         <div style="margin-top:16px">
-          <label style="color:#cbd5e1;font-size:14px">Your Answer / Submission</label>
+          <label style="color:#cbd5e1;font-size:14px" id="answer-label">Your Answer / Submission</label>
           <textarea id="submission-text" rows="6" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:#0b131a;color:#e2e8f0"></textarea>
         </div>
-        <div style="margin-top:12px">
+        <div style="margin-top:12px" id="file-wrap">
           <label style="color:#cbd5e1;font-size:14px">Upload Files (images/pdf if any)</label>
           <input type="file" id="file-input" multiple style="color:#cbd5e1">
         </div>

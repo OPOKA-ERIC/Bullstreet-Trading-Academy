@@ -21,8 +21,25 @@ async function loadQueue() {
     const row = document.createElement('div')
     row.className = 'form-card'
     row.style.cssText = 'padding:14px;background:#0f1720;border:1px solid rgba(255,255,255,.08);border-radius:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap'
-    row.innerHTML = `<div><div style="color:#e2e8f0">${s.tasks?.title||'Task'} • Attempt ${s.attempt_number}</div><div style="color:#94a3b8;font-size:14px">${s.profiles?.full_name||s.user_id} • ${new Date(s.submitted_at).toLocaleString()} • ${s.status}</div></div><button class="btn btn-primary btn-sm" data-id="${s.id}">Grade</button>`
-    row.querySelector('button').addEventListener('click', ()=>openGrader(s))
+
+    const info = document.createElement('div')
+    const titleLine = document.createElement('div')
+    titleLine.style.color = '#e2e8f0'
+    titleLine.textContent = `${s.tasks?.title || 'Task'} • Attempt ${s.attempt_number}`
+    const metaLine = document.createElement('div')
+    metaLine.style.color = '#94a3b8'
+    metaLine.style.fontSize = '14px'
+    metaLine.textContent = `${s.profiles?.full_name || s.user_id} • ${new Date(s.submitted_at).toLocaleString()} • ${s.status}`
+    info.appendChild(titleLine)
+    info.appendChild(metaLine)
+
+    const btn = document.createElement('button')
+    btn.className = 'btn btn-primary btn-sm'
+    btn.textContent = 'Grade'
+    btn.addEventListener('click', () => openGrader(s))
+
+    row.appendChild(info)
+    row.appendChild(btn)
     queue.appendChild(row)
   }
 }
@@ -56,8 +73,16 @@ async function openGrader(s) {
   rubricItems.forEach(it=>{
     const row = document.createElement('div')
     row.style.cssText='display:flex;align-items:center;gap:10px'
-    row.innerHTML = `<input type="checkbox" id="rb-${it.id}"><label for="rb-${it.id}" style="color:#cbd5e1">${it.label}${it.is_critical?' (Critical)':''}</label>`
-    row.querySelector('input').addEventListener('change', e=>{ rubricState[it.id]=e.target.checked })
+    const cb = document.createElement('input')
+    cb.type = 'checkbox'
+    cb.id = `rb-${it.id}`
+    const label = document.createElement('label')
+    label.htmlFor = cb.id
+    label.style.color = '#cbd5e1'
+    label.textContent = `${it.label}${it.is_critical?' (Critical)':''}`
+    cb.addEventListener('change', e=>{ rubricState[it.id]=e.target.checked })
+    row.appendChild(cb)
+    row.appendChild(label)
     rg.appendChild(row)
   })
   document.getElementById('feedback').value = ''
