@@ -263,6 +263,11 @@ create trigger profiles_role_guard
   for each row execute function public.guard_profile_role();
 
 -- Existing users
+insert into public.profiles (id, full_name)
+select u.id, coalesce(nullif(u.raw_user_meta_data->>'full_name', ''), u.email)
+from auth.users u
+on conflict (id) do nothing;
+
 insert into public.user_roles (user_id, role)
 select p.id, coalesce(nullif(p.role, ''), 'student')
 from public.profiles p
