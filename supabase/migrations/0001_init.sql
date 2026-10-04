@@ -149,11 +149,27 @@ alter table public.user_progress      alter column day_id drop not null;
 alter table public.task_variants      add column if not exists options        jsonb;
 alter table public.profiles           add column if not exists diagnosis_code text;
 
--- Guarantees required by supabase-js `.upsert(..., { onConflict })`
+-- Guarantees required by supabase-js `.upsert(..., { onConflict })`.
+-- These tables pre-date this file, so their PRIMARY KEYs were never applied —
+-- dedupe first, then add the unique indexes explicitly. Re-running is a no-op.
+delete from public.user_progress a using public.user_progress b
+  where a.ctid < b.ctid and a.user_id = b.user_id and a.task_id = b.task_id;
+delete from public.submission_rubric a using public.submission_rubric b
+  where a.ctid < b.ctid and a.submission_id = b.submission_id and a.rubric_item_id = b.rubric_item_id;
+delete from public.verification_links a using public.verification_links b
+  where a.ctid < b.ctid and a.source_task_id = b.source_task_id;
+
 create unique index if not exists user_progress_user_task_key
   on public.user_progress (user_id, task_id);
+create unique index if not exists submission_rubric_submission_item_key
+  on public.submission_rubric (submission_id, rubric_item_id);
+create unique index if not exists verification_links_source_key
+  on public.verification_links (source_task_id);
 create unique index if not exists task_variants_task_number_key
   on public.task_variants (task_id, variant_number);
+create unique index if not exists profiles_id_key
+  on public.profiles (id);
+
 create index if not exists tasks_active_order_idx
   on public.tasks (is_active, sort_order);
 create index if not exists submissions_user_task_idx
@@ -448,7 +464,9 @@ select s.id, v.id
 from public.tasks s, public.tasks v
 where s.title = 'Day 1 — Pre-Trade Routine'
   and v.title = 'Day 2 — Position Sizing From Your Account'
-on conflict (source_task_id) do nothing;
+  and not exists (
+    select 1 from public.verification_links vl where vl.source_task_id = s.id
+  );
 
 -- Alternate retry formats
 insert into public.task_variants (task_id, variant_number, title, instructions)
