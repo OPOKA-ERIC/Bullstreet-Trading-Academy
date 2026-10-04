@@ -63,8 +63,9 @@ create table if not exists public.tasks (
   options        jsonb,                              -- mcq options: ["A","B",...]
   correct_answer text,                               -- mcq: index of correct option as text
   diagnosis_code text,                               -- null = applies to every diagnosis
-  day_id         int  not null default 1,
-  sort_order     int  not null default 0,
+  day_id         int,                                -- legacy: uuid on older deployments, unused by the app
+  day_label      text,                               -- display grouping, e.g. 'Day 1'
+  sort_order     int  not null default 0,            -- global ordering across the whole path
   max_attempts   int  not null default 3,
   allow_retry    boolean not null default true,
   is_active      boolean not null default true,
@@ -134,8 +135,17 @@ alter table public.tasks              add column if not exists summary        te
 alter table public.tasks              add column if not exists options        jsonb;
 alter table public.tasks              add column if not exists correct_answer text;
 alter table public.tasks              add column if not exists diagnosis_code text;
+alter table public.tasks              add column if not exists day_label      text;
 alter table public.tasks              add column if not exists sort_order     int not null default 0;
 alter table public.tasks              add column if not exists is_active      boolean not null default true;
+
+-- day_id is uuid on the pre-existing deployment and is no longer read by the
+-- app (day_label + sort_order drive ordering), so make it optional rather than
+-- guessing its type. If you want to restore the link to public.days later,
+-- backfill with: update tasks t set day_id = d.id from days d where d.order_idx = ...
+alter table public.tasks              alter column day_id drop not null;
+alter table public.user_progress      alter column day_id drop not null;
+
 alter table public.task_variants      add column if not exists options        jsonb;
 alter table public.profiles           add column if not exists diagnosis_code text;
 
@@ -145,7 +155,7 @@ create unique index if not exists user_progress_user_task_key
 create unique index if not exists task_variants_task_number_key
   on public.task_variants (task_id, variant_number);
 create index if not exists tasks_active_order_idx
-  on public.tasks (is_active, day_id, sort_order);
+  on public.tasks (is_active, sort_order);
 create index if not exists submissions_user_task_idx
   on public.submissions (user_id, task_id, attempt_number desc);
 create index if not exists submissions_status_idx
@@ -355,68 +365,68 @@ where not exists (select 1 from public.test_questions limit 1);
 -- ============================================================================
 -- 7. Seed — Rehab tasks (skipped per-title, so re-running is safe)
 -- ============================================================================
-insert into public.tasks (title, summary, instructions, type, input_type, diagnosis_code, day_id, sort_order, max_attempts)
+insert into public.tasks (title, summary, instructions, type, input_type, diagnosis_code, day_label, sort_order, max_attempts)
 select * from (values
   ('Day 1 — Pre-Trade Routine',
    'Write the 5-step routine you will run before every entry.',
    'Before you place a single order tomorrow, write your pre-trade routine as exactly 5 numbered steps. Each step must be an observable action (not a feeling). Then explain in 3 sentences what happens to you when you skip step 1.',
-   'manual','text', null, 1, 1, 3),
+   'manual','text', null, 'Day 1', 10, 3),
 
   ('Day 2 — Position Sizing From Your Account',
    'Calculate risk per trade from a fixed account size.',
    'You have a $1,000 account and you decide to risk 1% per trade ($10). A setup gives you a 20 pip stop on GBP/USD. (a) What is your position size in lots? (b) If the same setup has a 40 pip stop, what changes and why? (c) Write the one sentence you will say to yourself when you feel like doubling the size.',
-   'manual','text', null, 2, 1, 3),
+   'manual','text', null, 'Day 2', 20, 3),
 
   ('Day 3 — Journal Audit: Your Last 20 Trades',
    'Find the single pattern that cost you the most.',
    'Pull your last 20 trades. (a) How many violated your entry rule? (b) How many moved a stop? (c) Of your losses, what percentage came from trades that broke a rule versus trades that followed one? (d) State the single most expensive pattern in one sentence.',
-   'manual','text', null, 3, 1, 3),
+   'manual','text', null, 'Day 3', 30, 3),
 
   ('Revenge Path 1 — The 24-Hour Cooling Rule',
    'Convert your impulse response into a written protocol.',
    'You have just closed a losing trade and your next instinct is to immediately re-enter to "get it back". Write your cooling-off protocol: the exact rule, the exact duration, and what you are allowed to do during that window. Then describe the physical sensation you get when you want to override it.',
-   'manual','text', 'Revenge', 4, 1, 3),
+   'manual','text', 'Revenge', 'Day 4 — Your Path', 40, 3),
 
   ('FOMO Path 1 — Confirmation Before Entry',
    'Define what "confirmation" means for your setups.',
    'FOMO enters late. For each of your three main setups, write the specific confirmation signal you will wait for before entry (not "a candle" — the exact condition). Then explain how you will feel when price runs away without you, and what you will do instead.',
-   'manual','text', 'FOMO', 4, 1, 3),
+   'manual','text', 'FOMO', 'Day 4 — Your Path', 50, 3),
 
   ('Overtrading Path 1 — The Daily Cap',
    'Set and justify a hard trade limit.',
    'Choose your maximum number of trades per day. (a) State the number and the evidence for it. (b) Write the exact rule you follow when you hit the cap but still see a setup. (c) Describe the boredom or restlessness you feel at the cap and how you will work with it rather than trade through it.',
-   'manual','text', 'Overtrading', 4, 1, 3),
+   'manual','text', 'Overtrading', 'Day 4 — Your Path', 60, 3),
 
   ('Overconfidence Path 1 — Downsize After Wins',
    'Build a rule that punishes your own streak.',
    'Your wins are inflating your size. (a) Write the rule that forces you to reduce size after 2 consecutive winners. (b) Explain why reducing after wins protects your account. (c) State what you will tell yourself when the urge to size up appears.',
-   'manual','text', 'Overconfidence', 4, 1, 3),
+   'manual','text', 'Overconfidence', 'Day 4 — Your Path', 70, 3),
 
   ('Analysis Paralysis Path 1 — The 15-Minute Decision Box',
    'Impose a hard ceiling on analysis time.',
    'You research past the point of decision. (a) Set a maximum analysis time per setup. (b) Write the exact question your analysis must answer to justify entry. (c) Describe what you will do when the timer expires without an answer.',
-   'manual','text', 'Analysis_Paralysis', 4, 1, 3),
+   'manual','text', 'Analysis_Paralysis', 'Day 4 — Your Path', 80, 3),
 
   ('Impatience Path 1 — Entry Trigger Discipline',
    'Replace impulse entries with trigger-based entries.',
    'You rush entries. For each of your three main setups, write the exact price or condition that triggers entry — something that cannot fire early. Then describe your physical urge to "get in before it moves" and the exact phrase you will use to talk yourself out of it.',
-   'manual','text', 'Fear_Of_Missing/Impatience', 4, 1, 3),
+   'manual','text', 'Fear_Of_Missing/Impatience', 'Day 4 — Your Path', 90, 3),
 
   ('Patience Path 1 — Profit-Taking Rules',
    'Convert holding behaviour into a rule.',
    'You wait well but over-hold. (a) Write the exact condition that takes partial profit. (b) Write the condition that moves your stop to breakeven. (c) Explain what losing an unrealised gain feels like and how you will accept it.',
-   'manual','text', 'Patience', 4, 1, 3),
+   'manual','text', 'Patience', 'Day 4 — Your Path', 100, 3),
 
   ('Decisive Path 1 — Validate Before You Act',
    'Keep the speed, add the check.',
    'You act fast but skip confirmation. (a) Write the one validation check you will never skip. (b) Explain what speed has cost you. (c) Write the rule that tells you when "fast" has become "careless".',
-   'manual','text', 'Action', 4, 1, 3),
+   'manual','text', 'Action', 'Day 4 — Your Path', 110, 3),
 
   ('Disciplined Path 1 — Stretch the Edge',
    'Raise the bar without raising the risk.',
    'Your baseline is solid. (a) Identify the setup you take most often and write how you could raise its win rate by 10%. (b) State one habit you will add to make your current edge repeatable under pressure. (c) Describe how you will know if you have broken your own discipline.',
-   'manual','text', 'Discipline', 4, 1, 3)
-) as v(title, summary, instructions, type, input_type, diagnosis_code, day_id, sort_order, max_attempts)
+   'manual','text', 'Discipline', 'Day 4 — Your Path', 120, 3)
+) as v(title, summary, instructions, type, input_type, diagnosis_code, day_label, sort_order, max_attempts)
 where not exists (select 1 from public.tasks limit 1);
 
 -- Rubric for the universal Day 1 task

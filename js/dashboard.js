@@ -29,15 +29,16 @@ function renderRx(tasks, progress) {
   }
   if (empty) empty.style.display = 'none'
 
-  let lastDay = null
+  let lastLabel = null
   tasks.forEach((t, i) => {
     const status = progress[t.id] || 'locked'
     const meta = STATUS_STYLE[status] || STATUS_STYLE.locked
     const locked = status === 'locked'
+    const label = t.day_label || 'Tasks'
 
-    if (t.day_id !== lastDay) {
-      lastDay = t.day_id
-      list.appendChild(el('div', 'color:#d4af37;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-top:' + (i ? '14px' : '0') + ';padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.08)', `Day ${t.day_id}`))
+    if (label !== lastLabel) {
+      lastLabel = label
+      list.appendChild(el('div', 'color:#d4af37;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-top:' + (i ? '14px' : '0') + ';padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.08)', label))
     }
 
     const card = el('div', 'padding:16px;background:#0f1720;border:1px solid rgba(255,255,255,.08);border-radius:12px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap')

@@ -116,11 +116,12 @@ async function mark(status) {
   }).eq('id', currentSub.id)
 
   if (passed) {
-    const { data: sub } = await supabase.from('submissions').select('task_id,tasks(day_id)').eq('id', currentSub.id).single()
+    const { data: sub } = await supabase.from('submissions').select('task_id').eq('id', currentSub.id).single()
+    const { data: t } = await supabase.from('tasks').select('day_id,day_label,sort_order').eq('id', sub.task_id).single()
     await supabase.from('user_progress').upsert({
       user_id: currentSub.user_id,
       task_id: sub.task_id,
-      day_id: sub.tasks.day_id,
+      day_id: t?.day_id,
       status: 'passed',
       completed_at: new Date().toISOString()
     }, { onConflict:'user_id,task_id' })

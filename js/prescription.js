@@ -72,7 +72,6 @@ export async function loadPrescribedTasks(diagnosisCode) {
     .from('tasks')
     .select('*')
     .eq('is_active', true)
-    .order('day_id', { ascending: true })
     .order('sort_order', { ascending: true })
 
   if (error) throw error
