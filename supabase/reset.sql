@@ -1,9 +1,9 @@
--- Bullstreet Academy — clean slate
+-- Bullstreet Academy - clean slate
 -- Run this ONCE, then run migrations/0001_init.sql immediately after.
 --
 -- Why: the project currently has an unknown mix of half-applied migrations.
 -- Patching further risks leaving two conflicting sets of policies/functions.
--- There is no production data to lose — only test accounts. Auth logins in
+-- There is no production data to lose - only test accounts. Auth logins in
 -- auth.users are NOT touched, and 0001 re-creates their profile rows.
 
 -- ---------------------------------------------------------------------------

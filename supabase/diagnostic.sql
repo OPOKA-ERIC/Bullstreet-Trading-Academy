@@ -1,4 +1,4 @@
--- Bullstreet Academy — state diagnostic
+-- Bullstreet Academy - state diagnostic
 -- Run each numbered statement separately in the Supabase SQL Editor.
 -- Every one of these reads only the catalog; none of them change anything.
 
