@@ -16,6 +16,18 @@ create table if not exists public.user_roles (
   role    text not null default 'student'
 );
 
+-- The function MUST exist before any policy references it.
+create or replace function public.current_role()
+returns text
+language sql
+stable
+set search_path = public
+as $$
+  select role from public.user_roles where user_id = auth.uid()
+$$;
+
+grant execute on function public.current_role() to authenticated, anon;
+
 alter table public.user_roles enable row level security;
 
 drop policy if exists user_roles_select_own on public.user_roles;
@@ -30,17 +42,6 @@ create policy user_roles_update_admin on public.user_roles
 drop policy if exists user_roles_insert_admin on public.user_roles;
 create policy user_roles_insert_admin on public.user_roles
   for insert with check (public.current_role() in ('tutor','admin'));
-
-create or replace function public.current_role()
-returns text
-language sql
-stable
-set search_path = public
-as $$
-  select role from public.user_roles where user_id = auth.uid()
-$$;
-
-grant execute on function public.current_role() to authenticated, anon;
 
 -- ============================================================================
 -- 1. Tables
