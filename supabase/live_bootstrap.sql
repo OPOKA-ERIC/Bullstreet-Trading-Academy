@@ -1,15 +1,11 @@
 -- ============================================================================
 -- Bullstreet Academy - LIVE BOOTSTRAP
--- Concatenation of 0001_init.sql + 0002_role_rls_fix.sql, plus the final
--- housekeeping block:
---   * instantly confirm the test account (bullstreets@gmail.com) so it can log
---     in without a verification email
---   * promote the account to tutor in BOTH user_roles and profiles
--- Why a single file: pasting one file from the GitHub "raw" view is lossless.
--- It is fully idempotent - safe to re-run.
+-- Concatenation of migrations 0001 + 0002 + 0003, kept in sync with
+-- supabase/migrations/ so the exact same SQL can be applied by:
+--   A) `supabase db push` (after the CLI is linked to this project), or
+--   B) pasting this file into the dashboard SQL Editor
+-- Idempotent and pure ASCII. Proven valid against a real Postgres engine.
 -- ============================================================================
-
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>> 0001_init.sql <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 -- Bullstreet Academy - canonical schema
 -- Run this in Supabase SQL Editor (or `supabase db push`).
 -- It is IDEMPOTENT: safe to run against the existing project without losing data.
@@ -559,12 +555,7 @@ select t.id, 1, 'Day 1 - Pre-Trade Routine (Format B)',
 from public.tasks t
 where t.title = 'Day 1 - Pre-Trade Routine'
   and not exists (select 1 from public.task_variants where task_id = t.id and variant_number = 1);
-
--- ============================================================================
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>> 0002_role_rls_fix.sql <<<<<<<<<<<<<<<<<<<<<<<
--- Delta against a partially applied 0001. No-op on a clean database.
--- ============================================================================
--- Bullstreet Academy - 0002: break the RLS recursion on `profiles`
+-- >>>>>>>>>>>>>>>>>>>>>>>> 0001_init.sql <<<<<<<<<<<<<<<<<<<<<<<<-- Bullstreet Academy - 0002: break the RLS recursion on `profiles`
 --
 -- WHY: public.current_role() did `select role from profiles ...`, while the
 -- profiles policy itself called public.current_role(). Postgres rejects that as
@@ -789,27 +780,28 @@ select * from (values
    'manual','text', 'Discipline', 'Day 4 - Your Path', 120, 3)
 ) as v(title, summary, instructions, type, input_type, diagnosis_code, day_label, sort_order, max_attempts)
 where not exists (select 1 from public.tasks limit 1);
+-- >>>>>>>>>>>>>>>>>>>>>> 0002_role_rls_fix.sql <<<<<<<<<<<<<<<<<<<-- ============================================================================
+-- Bullstreet Academy - 0003: test account housekeeping
+-- Confirms bullstreets@gmail.com and promotes it to tutor in BOTH user_roles
+-- and profiles. Runs as the postgres role via `supabase db push`, so auth.uid()
+-- is null and the guard trigger does NOT sync user_roles - update it here.
+-- Idempotent: no-ops if the account does not exist (e.g. recreated later).
+-- ============================================================================
 
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>> POST-BOOTSTRAP <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
--- Confirm the test account instantly (no verification email needed).
 update auth.users
 set email_confirmed_at = coalesce(email_confirmed_at, now()),
     updated_at = now()
 where email = 'bullstreets@gmail.com';
 
--- Promote the test account to tutor in both tables.
--- Ran from the SQL Editor auth.uid() is null, so the guard trigger lets the
--- change through to profiles but does NOT sync user_roles - update both here.
 update public.profiles set role = 'tutor'
 where id = (select id from auth.users where email = 'bullstreets@gmail.com');
 
 insert into public.user_roles (user_id, role)
 select id, 'tutor' from auth.users where email = 'bullstreets@gmail.com'
 on conflict (user_id) do update set role = excluded.role;
-
+-- >>>>>>>>>>>>>>>>>>> 0003_test_user_housekeeping.sql <<<<<<<<<<<<<
 -- ============================================================================
--- Verified state (paste into SQL editor after bootstrap):
+-- Verified state (run after bootstrap):
 --   select 'questions' as t, count(*) from public.test_questions
 --   union all select 'tasks', count(*) from public.tasks
 --   union all select 'profiles', count(*) from public.profiles

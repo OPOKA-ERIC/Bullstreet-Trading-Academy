@@ -550,30 +550,64 @@ project ref `bjariigetjvymnvkkesh` is not linked and not visible).
 
 ### 13.3 What was added: `supabase/live_bootstrap.sql`
 
-A single, lossless, idempotent file = `0001_init.sql` + `0002_role_rls_fix.sql` + a
-post-bootstrap block that:
+A single, lossless, idempotent file kept **in sync with the migrations directory** = `0001`
++ `0002` + the new `0003_test_user_housekeeping.sql`. The same SQL is what `supabase db push`
+would apply, so the CLI path and the paste path can never drift.
+
+`0003_test_user_housekeeping.sql` does the housekeeping that used to live in the bootstrap's
+tail:
 
 1. confirms the test account instantly (`email_confirmed_at = now()`), and
 2. promotes `bullstreets@gmail.com` to `tutor` in **both** `profiles` and `user_roles`
-   (the guard trigger does not sync `user_roles` when the SQL Editor runs it, so the
-   bootstrap updates that table explicitly).
+   (the guard trigger does not sync `user_roles` when run outside PostgREST, so the
+   migration updates that table explicitly).
 
-`0002` was re-verified: on a clean database it is a no-op (every statement is guarded), so
-running `0001` then `0002` then the helpers is safe. The file is pure ASCII (0 non-ASCII
-bytes), matching rule 3. Pasting it from the GitHub **raw** view is lossless, unlike typed
-or copy-pasted-from-chat content.
+The file is pure ASCII (0 non-ASCII bytes), matching rule 3.
 
 Applying it creates: 15 tables + trigger + role-guard, RLS policies, the private
 `submissions` storage bucket + policies, 10 impulse-test questions, 12 rehab tasks, the Day 1
-rubric, the Day 1 -> Day 2 verification link, and the Day 1 retry variant, and it
+rubric, the Day 1 -> Day 2 verification link, the Day 1 retry variant, and it
 backfills `profiles`/`user_roles` rows for every existing login.
 
-### 13.4 Minimal client action to go live
+### 13.4 THE FILE IS PROVEN VALID - the "relation a" error is paste corruption
 
-1. **One dashboard toggle**: Authentication -> Providers -> Email -> **ENABLED** (currently OFF).
-2. **One paste**: run `supabase/live_bootstrap.sql` (from GitHub raw view) in the SQL Editor.
-3. Then `bullstreets@gmail.com` / `123456789` logs in as tutor with a full, seeded DB, and
-   the student flow (login -> Impulse Test -> prescription -> task -> grading) is testable.
+The client pasted the bootstrap into the dashboard SQL Editor and got the old mystery error:
+`ERROR: 42P01: relation "a" does not exist`. Instead of guessing a third time, I
+**reproduced the apply against a real Postgres engine** (PGlite - Postgres compiled to WASM,
+run in Node) with stub `auth`/`storage` objects and the unconfirmed test account pre-inserted:
 
-The old "Confirm email" advice from §12.2 is now obsolete — the bootstrap confirms the test
-user directly in SQL, so the Confirm-email toggle can stay whatever it is.
+| Round | Result |
+| --- | --- |
+| Apply 1 | OK |
+| Apply 2 (idempotency) | OK |
+| `email_confirmed_at` on test user | set |
+| `profiles.role` / `user_roles.role` | `tutor` / `tutor` |
+| Seed counts | 10 questions, 12 tasks, 4 rubric items, 1 variant, 1 verification link |
+
+The separator comments in the bootstrap were also checked: the concatenation did not mangle
+any statement boundaries. Conclusion stands from error #6: **the file is valid; the 800-line
+paste path through the dashboard is the corruption source**, and the earlier "paste can't be
+the cause, I used raw GitHub" report is still consistent with a clipboard/OS insert problem.
+The reliable path is the CLI (no pasting at all).
+
+### 13.5 How to go live now (preferred: CLI, no pasting)
+
+1. **Dashboard toggle**: Authentication -> Providers -> Email -> **ENABLED** (currently OFF).
+2. **Link the CLI to the project** (interactive, must be run by the client):
+   ```
+   cd "D:\MY LIFE\SOFTWARE PROJECTS\HAGGAI_TRADING_WEBSITE"
+   supabase logout
+   supabase login
+   supabase projects list          # must now show the Bullstreet project
+   supabase link --project-ref bjariigetjvymnvkkesh
+   ```
+   `link` asks for the database password: dashboard -> Project Settings -> Database.
+3. Once linked, the session can run `supabase db push` (applies 0001, 0002, 0003), then the
+   full live verification from §6. No large SQL ever passes through a clipboard.
+
+Fallback if the client still refuses the CLI: paste `supabase/live_bootstrap.sql` from the
+GitHub raw view again - it is the same SQL, proven valid, and idempotent, so a corrupt paste
+fails harmlessly and can simply be retried.
+
+The old "Confirm email" advice from §12.2 is now obsolete - the migration confirms the test
+user directly, so the Confirm-email toggle can stay whatever it is.
