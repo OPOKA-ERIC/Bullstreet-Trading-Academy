@@ -514,3 +514,66 @@ are pushed with the CLI owned by the right account. So after the email toggle is
 test user logs in, the Impulse Test itself will not load questions until `0001_init.sql` is
 applied. Both remaining blockers share the same root cause: no authenticated access to the
 Supabase project.
+
+---
+
+## 13. Session round 2 — Tuesday, 6 October 2026 (live diagnosis)
+
+Client said "done bruh, do what you can". Live probing of the project found the two
+remaining blockers and pinned their exact causes.
+
+### 13.1 Auth: the client disabled the wrong switch
+
+| Probe | Result |
+| --- | --- |
+| `POST /auth/v1/signup` (bullstreets@gmail.com) | HTTP 400 |
+| `POST /auth/v1/token?grant_type=password` | HTTP 422 `email_provider_disabled` — **"Email logins are disabled"** |
+
+Between sessions someone toggled the **Email provider itself OFF** in the dashboard.
+That blocks ALL email logins, not just signups. The earlier session's diagnosis (Confirm
+email ON) is now compounded by the provider being off. Both are dashboard-only settings.
+
+> Dashboard path: Authentication -> Sign In / Providers -> Email -> toggle **ON** the
+> Email provider. Then, so the existing test account can log in without a verification
+> email, run this once in the SQL Editor:
+> `update auth.users set email_confirmed_at = now() where email = 'bullstreets@gmail.com';`
+
+Unlike pasting a 550-line migration, that one line is safe to paste anywhere.
+
+### 13.2 Database: no tables at all
+
+Checked `public.test_questions`, `public.tasks`, `public.profiles`, `public.user_roles`
+through the PostgREST endpoint. **Every one returns HTTP 404 PGRST205 "Could not find the
+table in the schema cache".** The schema was never applied — the CLI blocker from §5 is
+still live (`supabase projects list` still shows only TutorUG and ShopLedger; the Bullstreet
+project ref `bjariigetjvymnvkkesh` is not linked and not visible).
+
+### 13.3 What was added: `supabase/live_bootstrap.sql`
+
+A single, lossless, idempotent file = `0001_init.sql` + `0002_role_rls_fix.sql` + a
+post-bootstrap block that:
+
+1. confirms the test account instantly (`email_confirmed_at = now()`), and
+2. promotes `bullstreets@gmail.com` to `tutor` in **both** `profiles` and `user_roles`
+   (the guard trigger does not sync `user_roles` when the SQL Editor runs it, so the
+   bootstrap updates that table explicitly).
+
+`0002` was re-verified: on a clean database it is a no-op (every statement is guarded), so
+running `0001` then `0002` then the helpers is safe. The file is pure ASCII (0 non-ASCII
+bytes), matching rule 3. Pasting it from the GitHub **raw** view is lossless, unlike typed
+or copy-pasted-from-chat content.
+
+Applying it creates: 15 tables + trigger + role-guard, RLS policies, the private
+`submissions` storage bucket + policies, 10 impulse-test questions, 12 rehab tasks, the Day 1
+rubric, the Day 1 -> Day 2 verification link, and the Day 1 retry variant, and it
+backfills `profiles`/`user_roles` rows for every existing login.
+
+### 13.4 Minimal client action to go live
+
+1. **One dashboard toggle**: Authentication -> Providers -> Email -> **ENABLED** (currently OFF).
+2. **One paste**: run `supabase/live_bootstrap.sql` (from GitHub raw view) in the SQL Editor.
+3. Then `bullstreets@gmail.com` / `123456789` logs in as tutor with a full, seeded DB, and
+   the student flow (login -> Impulse Test -> prescription -> task -> grading) is testable.
+
+The old "Confirm email" advice from §12.2 is now obsolete — the bootstrap confirms the test
+user directly in SQL, so the Confirm-email toggle can stay whatever it is.
