@@ -388,3 +388,68 @@ These were never in scope today and remain unbuilt:
 4. **Define a function before any policy that calls it.** `CREATE POLICY` resolves references eagerly.
 5. **Never let a role lookup read the table whose policy calls it.** That is the recursion in §3.4.
 6. **Keep migrations idempotent** — `if not exists`, `NOT EXISTS` guards, explicit unique indexes.
+
+---
+
+## 11. Session — Tuesday, 6 October 2026
+
+Client-facing changes requested by the account owner. Two items.
+
+| Item | Request | Status |
+| --- | --- | --- |
+| Social links | Add Telegram / email / YouTube / Instagram to the site | Done |
+| Registration flow | Register successfully -> land logged in directly, no email confirmation loop | Done (client-side) |
+
+### 11.1 Changes
+
+**Social links** — added everywhere:
+
+| Channel | Link |
+| --- | --- |
+| Telegram | `https://t.me/+bqYoAejxzANmOGY8` |
+| Email | `mailto:academybullstreet@gmail.com` |
+| YouTube | `https://www.youtube.com/@Bullstreetacademy` |
+| Instagram | `https://www.instagram.com/__kenny_black?igsh=MWRkeHl5Z3ltYXdtNQ%3D%3D&utm_source=qr` |
+
+- `index.html` — new social row under the footer brand description.
+- `app/dashboard.html` — already had the four links in a "Connect" column; fixed the raw `&`
+  in the Instagram URL to `&amp;`.
+- `app/login.html`, `app/signup.html`, `app/assessment.html`, `app/task.html`,
+  `app/grading.html`, `app/lesson.html` — the six app pages that had **no footer** now have
+  one, matching the dashboard footer including the "Connect" social links.
+- `styles.css` — added `.footer-socials` (wrapped link row, hover in brand green).
+
+**Registration flow** (`js/auth.js`) — the signup handler now:
+
+1. `signUp` + `ensureProfile` as before.
+2. If `data.session` exists, straight to `dashboard.html` (project has confirmation off).
+3. Otherwise it calls `signInWithPassword` with the same credentials and goes to
+   `dashboard.html`. The success message is now "Account created. Signing you in...".
+4. If auto-login still fails, the real reason is shown and the user is sent to `login.html`.
+
+The old message ("Check email if confirmation required") is gone, so a user never sees a
+dead end after registering.
+
+### 11.2 Tests run
+
+- All JS files pass `node --check` (including `js/auth.js`, `script.js`).
+- Local HTTP smoke test: served the repo and fetched all 8 HTML pages plus `styles.css`,
+  `js/auth.js`, `js/supabase-client.js`, `logo.jpeg` — all returned **200**.
+- Confirmed the four social links are present on all 8 HTML pages.
+- `app/dashboard.html` Instagram link now HTML-valid (`&amp;`).
+
+### 11.3 Still true / one caveat for the client
+
+Auto-login only works while Supabase has email confirmation **disabled**. The client hit
+"email limit exceeded" earlier because Supabase's free tier rate-limits confirmation emails —
+that symptom is confirmation being on. Fix (dashboard side, cannot be done from code or CLI
+while the CLI is still linked to the wrong account):
+
+> Supabase dashboard -> Authentication -> Providers -> Email -> toggle **off** "Confirm email".
+
+Until that is flipped, a brand-new signup will return `Email not confirmed` in step 3 and the
+user is redirected to the login page (no dead end, but no straight-through either).
+
+### 11.4 Committed
+
+Pushed to `origin/main` with the work in §11.1. See the commit log in this repo.

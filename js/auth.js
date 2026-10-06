@@ -51,8 +51,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (data.user) {
         await ensureProfile(data.user.id, fullName)
       }
-      msg.textContent = 'Account created. Check email if confirmation required. Redirecting...'
-      setTimeout(() => (window.location.href = 'dashboard.html'), 1200)
+
+      if (data.session) {
+        msg.textContent = 'Account created. Signing you in...'
+        setTimeout(() => (window.location.href = 'dashboard.html'), 600)
+        return
+      }
+
+      msg.textContent = 'Account created. Signing you in...'
+      const { error: loginError } = await supabase.auth.signInWithPassword({ email, password })
+      if (loginError) {
+        msg.textContent = 'Account created, but auto-login failed: ' + loginError.message
+        setTimeout(() => (window.location.href = 'login.html'), 2000)
+        return
+      }
+      setTimeout(() => (window.location.href = 'dashboard.html'), 600)
     })
   }
 

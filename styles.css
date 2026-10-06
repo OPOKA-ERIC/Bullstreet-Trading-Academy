@@ -654,6 +654,9 @@ body {
 .footer-links h5 { font-family: 'Sora', sans-serif; font-size: 0.85rem; margin-bottom: 14px; color: var(--text); }
 .footer-links a { display: block; color: var(--text-muted); text-decoration: none; font-size: 0.88rem; padding: 4px 0; transition: color 0.2s; }
 .footer-links a:hover { color: var(--green); }
+.footer-socials { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 16px; }
+.footer-socials a { color: var(--text-muted); text-decoration: none; font-size: 0.88rem; padding: 4px 0; transition: color 0.2s; }
+.footer-socials a:hover { color: var(--green); }
 .footer-bottom { text-align: center; padding-top: 24px; border-top: 1px solid var(--border); margin-top: 32px; }
 .disclaimer { color: var(--text-muted); font-size: 0.75rem; max-width: 700px; margin: 0 auto; }
 
