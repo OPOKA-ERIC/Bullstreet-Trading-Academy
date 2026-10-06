@@ -6,6 +6,12 @@ export async function requireAuth(redirectTo = 'login.html') {
     window.location.href = redirectTo
     return null
   }
+  const { data: { user }, error } = await supabase.auth.getUser()
+  if (error || !user) {
+    await supabase.auth.signOut()
+    window.location.href = redirectTo
+    return null
+  }
   return session
 }
 

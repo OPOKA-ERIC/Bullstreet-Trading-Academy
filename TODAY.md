@@ -641,6 +641,33 @@ Notes from this session:
   SQL Editor **now that the account exists** — it updates both tables by email, idempotently:
   `update public.profiles set role='tutor' where id=(select id from auth.users where email='bullstreets@gmail.com');`
   plus the `user_roles` upsert (full text in `supabase/migrations/0003_test_user_housekeeping.sql`).
-- CLI link/dashboard DB-password are no longer blocking: the paste path succeeded, so `supabase db
-  push` is optional. The DB superuser password the client shared plus the pooler was rejected by
+- CLI link/dashboard DB-password are no longer blocking: the paste path succeeded, so `supabase db push`
+  is optional. The DB superuser password the client shared plus the pooler was rejected by
   the server — no reset needed, and it must not be reused as it was shared in chat.
+
+## 15. Session round 3b — "login does nothing" root cause: the CDN is unreachable
+
+Client reported the site login "stays on the login page" and the assessment opens its intro
+without a real login. Server-side everything verified fine (signIn 200, 10 questions, 12 tasks).
+
+Root cause found on this machine: `cdn.jsdelivr.net` does **not resolve** on the client's network,
+while `registry.npmjs.org` and GitHub Pages do. The site loaded supabase-js via
+`import ... from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'`, so the JS silently
+failed in every page: the login form did nothing and the auth gates never ran.
+
+Fixes shipped:
+
+1. **Vendored the SDK.** Bundled `@supabase/supabase-js` (with auth-js, postgrest-js, realtime-js,
+   storage-js, functions-js) with esbuild into `js/vendor/supabase.esm.js` (~227 KB, one file,
+   browser target). `js/supabase-client.js` now imports it locally — zero CDN dependency.
+   Smoke-tested the bundle in Node: `createClient` + real sign-in + questions query all pass.
+2. **Hardened `requireAuth`** (`js/app-utils.js`): after `getSession`, it now validates through
+   `supabase.auth.getUser()` and, on failure, signs out and redirects to login — so a stale
+   session (e.g. the deleted `55369259-...` user's token left in localStorage) can never half-log
+   someone in again. The user simply signs in fresh.
+3. **Hardened the login page** (`js/auth.js`): a saved-but-invalid session is purged and the user
+   is told to sign in again; the submit button is disabled/relabelled while signing in and shows
+   the server error message on failure.
+
+The client should **hard-refresh (Ctrl+F5)** the live site — the old browser half-session will be
+cleared automatically by the new code.
