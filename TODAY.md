@@ -611,3 +611,36 @@ fails harmlessly and can simply be retried.
 
 The old "Confirm email" advice from §12.2 is now obsolete - the migration confirms the test
 user directly, so the Confirm-email toggle can stay whatever it is.
+
+## 14. Session round 3 — resolution (bootstrap live, login verified)
+
+The client pasted the raw `live_bootstrap.sql` again and got **Success** - the schema applied.
+Live verification (all through the app's own API, anon key):
+
+| Probe | Result |
+| --- | --- |
+| Tables exist (anon probe) | `test_questions`, `tasks`, ... return 200-empty instead of PGRST205 |
+| `POST /auth/v1/token` bullstreets@gmail.com / 123456789 | **HTTP 200** — login works, account confirmed |
+| `test_questions` (authenticated) | 10 rows |
+| `tasks` (authenticated) | 12 rows |
+| `profiles` / `user_roles` | 1 row each — role currently **student** |
+| `assessment_results` / `user_progress` | 0 rows (new account, expected) |
+
+Notes from this session:
+
+- The old test account (`55369259-...`) had been deleted by the client; the "update auth.users
+  ... change password" Snippet and the 0003-based promotion both affected 0 rows, which read as
+  "invalid login credentials" and "No rows returned".
+- Re-signup via `POST /auth/v1/signup` re-created the account (`c427bdff-4693-46cb-a85b-9a05a7b16b58`)
+  and **auto-confirmed it** (`email_confirmed_at` set at creation) — the Confirm-email toggle is
+  currently OFF, so no verification email is needed.
+- Login now succeeds. The account is a **student**: an API-side PATCH to `profiles.role` /
+  `user_roles.role` returned 204 but the RLS + role-guard trigger reverted it to `student`
+  (the client cannot self-promote - correct behaviour).
+- To make the test login a tutor too (for the grading page), run migration `0003` again from the
+  SQL Editor **now that the account exists** — it updates both tables by email, idempotently:
+  `update public.profiles set role='tutor' where id=(select id from auth.users where email='bullstreets@gmail.com');`
+  plus the `user_roles` upsert (full text in `supabase/migrations/0003_test_user_housekeeping.sql`).
+- CLI link/dashboard DB-password are no longer blocking: the paste path succeeded, so `supabase db
+  push` is optional. The DB superuser password the client shared plus the pooler was rejected by
+  the server — no reset needed, and it must not be reused as it was shared in chat.
