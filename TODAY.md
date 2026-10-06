@@ -453,3 +453,64 @@ user is redirected to the login page (no dead end, but no straight-through eithe
 ### 11.4 Committed
 
 Pushed to `origin/main` with the work in §11.1. See the commit log in this repo.
+
+---
+
+## 12. Session follow-up — Tuesday, 6 October 2026 (client feedback)
+
+The client tested the site and asked for a hard model change: **no self-registration at all**.
+Accounts exist only after payment; everyone flows through login.
+
+### 12.1 What changed
+
+- **Registration removed.** The "Create Account" links are gone from the homepage mobile menu
+  and footer. `app/signup.html` is no longer a registration page — it now redirects to
+  `app/login.html` and states that credentials are issued only after enrollment/payment.
+  `js/auth.js` lost its signup handler and the now-dead `ensureProfile()` helper.
+- **Login is the only door.** `app/login.html` now tells users "No self-registration. Your
+  login credentials are issued after you complete enrollment and payment" with an
+  "Enroll now" link back to the pricing section. If a session already exists the page
+  forwards straight to `dashboard.html`.
+- **Assessment already required a login** (`assessment.js` calls `requireAuth()` and bounces
+  to `login.html`), so the "Take Assessment" path now behaves exactly as requested: visitor
+  clicks it -> lands on login -> signs in with the credentials issued after payment -> test.
+
+### 12.2 Test user — created, but blocked by the client-side project setting
+
+The client asked for a fixed test login. I created it on the live Supabase project:
+
+| Field | Value |
+| --- | --- |
+| Email | `bullstreets@gmail.com` |
+| Password | `123456789` |
+| User ID | `55369259-acf7-4d99-aff5-bac96fd2cb1c` |
+| Status | **Unconfirmed** — `confirmation_sent_at` was set and the signup returned **no session** |
+
+A password grant against that user returned **HTTP 400**. Diagnosis from the API responses:
+the Supabase project still has **"Confirm email" turned ON**. That single setting is why every
+signup the client tried "refused" — the user is created but gets no usable session, and
+`signInWithPassword` answers `Email not confirmed`.
+
+No service-role key exists in the repo, and the Supabase CLI is still on the wrong account
+(§5), so this cannot be fixed from code. The client has a one-toggle fix:
+
+> Supabase dashboard -> Authentication -> Sign In / Providers -> Email -> **Confirm email: OFF**
+
+After that toggle: delete the unconfirmed `bullstreets@gmail.com` row in
+**Authentication -> Users** (a re-signup of an existing email returns no new session), then
+re-run the signup — it will return a session immediately.
+
+### 12.3 Tests run
+
+- All JS files pass `node --check`.
+- Local HTTP smoke test: `index.html`, `app/login.html`, `app/signup.html`,
+  `app/assessment.html`, `app/dashboard.html` all return **200**.
+- No `signup.html` / "Create Account" / `signup-form` references remain in any HTML file.
+
+### 12.4 Still blocked, unchanged from §5
+
+The live database schema still has no `test_questions`, `tasks`, etc. until the migrations
+are pushed with the CLI owned by the right account. So after the email toggle is fixed and the
+test user logs in, the Impulse Test itself will not load questions until `0001_init.sql` is
+applied. Both remaining blockers share the same root cause: no authenticated access to the
+Supabase project.

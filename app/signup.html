@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign Up | Bullstreet Academy</title>
+  <title>No Self-Registration | Bullstreet Academy</title>
   <link rel="icon" type="image/jpeg" href="../logo.jpeg">
   <link rel="stylesheet" href="../styles.css">
+  <meta http-equiv="refresh" content="0; url=login.html">
 </head>
 <body>
   <header class="nav">
@@ -19,45 +20,13 @@
 
   <section class="section">
     <div class="container" style="max-width: 480px">
-      <h2 class="section-title">Create Account</h2>
-      <form id="signup-form" class="form-card" style="display:flex;flex-direction:column;gap:12px;padding:24px;background:#0f1720;border:1px solid rgba(255,255,255,.08);border-radius:12px">
-        <div>
-          <label style="color:#cbd5e1;font-size:14px">Full Name</label>
-          <input type="text" id="full_name" required style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:#0b131a;color:#e2e8f0">
-        </div>
-        <div>
-          <label style="color:#cbd5e1;font-size:14px">Email</label>
-          <input type="email" id="email" required style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:#0b131a;color:#e2e8f0">
-        </div>
-        <div>
-          <label style="color:#cbd5e1;font-size:14px">Password</label>
-          <input type="password" id="password" required minlength="6" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:#0b131a;color:#e2e8f0">
-        </div>
-        <button type="submit" class="btn btn-primary">Sign Up</button>
-        <div id="msg" style="color:#94a3b8;font-size:14px"></div>
-        <a href="login.html" style="color:#38bdf8;font-size:14px">Already have an account? Login</a>
-      </form>
+      <h2 class="section-title">Account Creation is Closed</h2>
+      <p style="color:#94a3b8;font-size:14px;line-height:1.7">Bullstreet Academy does not offer self-registration. Login credentials are only issued after you enroll and complete payment.</p>
+      <p style="margin-top:16px"><a href="login.html" class="btn btn-primary">Go to Login</a></p>
+      <p style="margin-top:12px"><a href="../index.html#pricing" class="btn btn-outline">View Packages &amp; Enroll</a></p>
     </div>
   </section>
 
-  <footer class="footer">
-    <div class="container footer-inner">
-      <div class="footer-brand">
-        <span class="brand-text">BULLSTREET<span class="brand-accent">ACADEMY</span></span>
-        <p class="small">Professional trading education. Built for transformation.</p>
-      </div>
-      <div class="footer-links">
-        <div class="footer-col">
-          <h4>Connect</h4>
-          <a href="https://t.me/+bqYoAejxzANmOGY8" target="_blank" rel="noopener">Telegram</a>
-          <a href="https://www.youtube.com/@Bullstreetacademy" target="_blank" rel="noopener">YouTube</a>
-          <a href="https://www.instagram.com/__kenny_black?igsh=MWRkeHl5Z3ltYXdtNQ%3D%3D&amp;utm_source=qr" target="_blank" rel="noopener">Instagram</a>
-          <a href="mailto:academybullstreet@gmail.com">Email</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <script type="module" src="../js/auth.js"></script>
+  <script>window.location.replace('login.html');</script>
 </body>
 </html>

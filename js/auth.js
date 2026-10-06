@@ -1,22 +1,16 @@
 import { supabase } from './supabase-client.js'
 
-async function ensureProfile(userId, fullName) {
-  const { data } = await supabase.from('profiles').select('id').eq('id', userId).single()
-  if (!data) {
-    await supabase.from('profiles').insert({
-      id: userId,
-      full_name: fullName || '',
-      role: 'student'
-    })
-  }
-}
-
 document.addEventListener('DOMContentLoaded', async () => {
   const loginForm = document.getElementById('login-form')
-  const signupForm = document.getElementById('signup-form')
   const logoutBtn = document.getElementById('logout-btn')
 
   if (loginForm) {
+    const { data: { session: existing } } = await supabase.auth.getSession()
+    if (existing) {
+      window.location.href = 'dashboard.html'
+      return
+    }
+
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault()
       const email = document.getElementById('email').value
@@ -31,41 +25,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
       msg.textContent = 'Success. Redirecting...'
       setTimeout(() => (window.location.href = 'dashboard.html'), 800)
-    })
-  }
-
-  if (signupForm) {
-    signupForm.addEventListener('submit', async (e) => {
-      e.preventDefault()
-      const fullName = document.getElementById('full_name').value
-      const email = document.getElementById('email').value
-      const password = document.getElementById('password').value
-      const msg = document.getElementById('msg')
-      msg.textContent = 'Creating account...'
-
-      const { data, error } = await supabase.auth.signUp({ email, password })
-      if (error) {
-        msg.textContent = error.message
-        return
-      }
-      if (data.user) {
-        await ensureProfile(data.user.id, fullName)
-      }
-
-      if (data.session) {
-        msg.textContent = 'Account created. Signing you in...'
-        setTimeout(() => (window.location.href = 'dashboard.html'), 600)
-        return
-      }
-
-      msg.textContent = 'Account created. Signing you in...'
-      const { error: loginError } = await supabase.auth.signInWithPassword({ email, password })
-      if (loginError) {
-        msg.textContent = 'Account created, but auto-login failed: ' + loginError.message
-        setTimeout(() => (window.location.href = 'login.html'), 2000)
-        return
-      }
-      setTimeout(() => (window.location.href = 'dashboard.html'), 600)
     })
   }
 
